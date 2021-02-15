@@ -4,6 +4,6 @@
 
 ### Team: 
           - Wasiq Nauman
-          -Luis Sosa
-          -Renzo Pederzoli
-          -Ananya Bhargava
+          - Luis Sosa
+          - Renzo Pederzoli
+          - Ananya Bhargava
