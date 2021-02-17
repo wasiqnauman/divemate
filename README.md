@@ -5,5 +5,5 @@
 ### Team: 
           - Wasiq Nauman
           - Luis Sosa 🧐
-          - Renzo Pederzoli (check perms)
+          - Renzo Pederzoli ✔
           - Ananya Bhargava
