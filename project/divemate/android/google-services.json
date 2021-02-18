@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "977358957362",
+    "project_id": "divemate-d7b15",
+    "storage_bucket": "divemate-d7b15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977358957362:android:35c61d08392536a363852b",
+        "android_client_info": {
+          "package_name": "com.miami.divemate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977358957362-ikqvhfqpmilajujeugs9l7rhimsd6q48.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyLvms4Q5UIQ2vpHKQQph_fLnPzhaAyx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977358957362-ikqvhfqpmilajujeugs9l7rhimsd6q48.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "977358957362-i842gsc3013390i6erm7m1eh484rbv1l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.miami.divemate"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
