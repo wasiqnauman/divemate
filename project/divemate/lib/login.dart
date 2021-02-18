@@ -1,4 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:toast/toast.dart';
+
+import 'package:divemate/profile.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -6,8 +11,66 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final _usernameCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
+  StreamSubscription<void> _authListener;
+  UserCredential _userCredential;
+
+
+  void _login() async{
+      try {
+        _userCredential = await _auth.signInWithEmailAndPassword(
+            email: _usernameCtrl.text,
+            password: _passwordCtrl.text
+        );
+      } catch (e) {
+          print(e.message);
+          Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+      }
+  }
+
+  void _signup() async{
+    try {
+      _userCredential =  await _auth.createUserWithEmailAndPassword(
+          email: _usernameCtrl.text,
+          password: _passwordCtrl.text
+      );
+    } catch (e) {
+        print(e.message);
+        Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+    }
+  }
+
+  void _onAuthChange(User user) {
+    if (user == null) {
+      print('No user is currently signed in.');
+    } else {
+      print('${user.email} is signed in!');
+      Toast.show("Signed in!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return ProfilePage();
+          })
+      );
+    }
+  }
+
+
+  @override
+  void dispose() {
+    // Clean up controllers when the widget is disposed.
+    _usernameCtrl.dispose();
+    _passwordCtrl.dispose();
+    _authListener.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+     _authListener = _auth.authStateChanges().listen(_onAuthChange);
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(187, 222, 220, 1),
       // Different types of layouts we can use here; still exploring...
@@ -20,11 +83,14 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Text('Welcome!'),
                 TextField(
+                  controller: _usernameCtrl,
                   decoration: InputDecoration(
                     labelText: 'Username',
                   ),
                 ),
                 TextField(
+                  controller: _passwordCtrl,
+                  obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Password',
                   ),
@@ -34,15 +100,11 @@ class _LoginPageState extends State<LoginPage> {
                   style: ButtonStyle(
                     // Still exploring button styles
                   ),
-                  onPressed: () {
-                    // TODO: Authenticate passed fields!
-                  },
+                  onPressed: _login,
                 ),
                 ElevatedButton(
                   child: Text('SIGNUP'),
-                  onPressed: () {
-                    // TODO: Take to sign-up page or register passed fields!
-                  },
+                  onPressed: _signup,
                 ),
               ],
             ),
