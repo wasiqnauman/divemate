@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:divemate/profile.dart';
 
@@ -19,15 +20,15 @@ class _LoginPageState extends State<LoginPage> {
 
 
   void _login() async{
-      try {
-        _userCredential = await _auth.signInWithEmailAndPassword(
-            email: _usernameCtrl.text,
-            password: _passwordCtrl.text
-        );
-      } catch (e) {
-          print(e.message);
-          Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
-      }
+    try {
+      _userCredential = await _auth.signInWithEmailAndPassword(
+          email: _usernameCtrl.text,
+          password: _passwordCtrl.text
+      );
+    } catch (e) {
+      print(e.message);
+      Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+    }
   }
 
   void _signup() async{
@@ -37,8 +38,8 @@ class _LoginPageState extends State<LoginPage> {
           password: _passwordCtrl.text
       );
     } catch (e) {
-        print(e.message);
-        Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+      print(e.message);
+      Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
     }
   }
 
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            return ProfilePage();
+            return ProfilePage(email: user.email);
           })
       );
     }
@@ -69,48 +70,94 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-     _authListener = _auth.authStateChanges().listen(_onAuthChange);
+    _authListener = _auth.authStateChanges().listen(_onAuthChange);
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(187, 222, 220, 1),
+      //backgroundColor: Color.fromRGBO(187, 222, 220, 1),
       // Different types of layouts we can use here; still exploring...
-      body: SafeArea(
-        child: ListView(
-          // ListView is needed as a wrapper to add padding and better control
-          padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 200.0),
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text('Welcome!'),
-                TextField(
-                  controller: _usernameCtrl,
-                  decoration: InputDecoration(
-                    labelText: 'Username',
+        body: SafeArea(
+            child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("images/ocean.jpg"),
+                    fit: BoxFit.cover,
                   ),
-                ),
-                TextField(
-                  controller: _passwordCtrl,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 2,
                   ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                ElevatedButton(
-                  child: Text('LOGIN'),
-                  style: ButtonStyle(
-                    // Still exploring button styles
+                child:
+
+                Container(
+                  margin: EdgeInsets.fromLTRB(20,200,10,200),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(169,169,169, 0.8),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
                   ),
-                  onPressed: _login,
-                ),
-                ElevatedButton(
-                  child: Text('SIGNUP'),
-                  onPressed: _signup,
-                ),
-              ],
-            ),
-          ]
+                  child:
+
+
+                  ListView(
+                    // ListView is needed as a wrapper to add padding and better control
+                      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 50.0),
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Row(
+                                children: [
+                                  Spacer(),
+                                  Text(
+                                    'Divemate',
+                                    style: GoogleFonts.pinyonScript(
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blueAccent
+                                    ),
+                                  ),
+                                  Spacer(),
+                                ]),
+                            TextField(
+                              controller: _usernameCtrl,
+                              decoration: InputDecoration(
+                                labelText: 'Username',
+                              ),
+                            ),
+                            TextField(
+                              controller: _passwordCtrl,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                labelText: 'Password',
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 50, 10, 10),
+                              child: ElevatedButton(
+                                child: Text('LOGIN'),
+                                style: ButtonStyle(
+                                  // Still exploring button styles
+                                ),
+                                onPressed: _login,
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: ElevatedButton(
+                                  child: Text('SIGNUP'),
+                                  onPressed: _signup,
+                                )
+                            ),
+                          ],
+                        ),
+                      ]
+                  ),)
+            )
         )
-      )
     );
   }
 }

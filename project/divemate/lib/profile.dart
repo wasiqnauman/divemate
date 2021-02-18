@@ -6,7 +6,9 @@ import 'package:divemate/login.dart';
 
 class ProfilePage extends StatefulWidget {
   String email;
-  ProfilePage({email = ""});
+  ProfilePage({email = ""}){
+    this.email = email;
+  }
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
