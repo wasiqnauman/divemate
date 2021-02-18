@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_fonts: "^0.3.8"
   firebase_core: "^0.7.0"
   firebase_auth: "^0.20.0+1"
   toast: "^0.1.5"
