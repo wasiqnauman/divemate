@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:divemate/profile.dart';
 
 class LoginPage extends StatefulWidget {
@@ -114,10 +113,10 @@ class _LoginPageState extends State<LoginPage> {
                                   Spacer(),
                                   Text(
                                     'Divemate',
-                                    style: GoogleFonts.pinyonScript(
+                                    style: GoogleFonts.lato(
                                         fontSize: 32,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.blueAccent
+                                        color: Colors.white
                                     ),
                                   ),
                                   Spacer(),
