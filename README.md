@@ -1,4 +1,3 @@
-![alt text](https://github.com/wasiqnauman/divemate/blob/main/docs/logo.png "Logo")
 # Divemate
 
 ## ECE413 - Software Engineering Spring 2021. 
