@@ -78,19 +78,14 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("images/ocean.jpg"),
+                    image: AssetImage('assets/images/ocean.jpg'),
                     fit: BoxFit.cover,
                   ),
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
                 ),
                 child:
 
                 Container(
-                  margin: EdgeInsets.fromLTRB(20,200,10,200),
+                  margin: EdgeInsets.fromLTRB(20,175,20,200),
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(169,169,169, 0.8),
                     borderRadius: BorderRadius.circular(10),
@@ -104,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   ListView(
                     // ListView is needed as a wrapper to add padding and better control
-                      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 50.0),
+                      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0),
                       children: <Widget>[
                         Column(
                           children: <Widget>[
@@ -135,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(10, 50, 10, 10),
+                              padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
                               child: ElevatedButton(
                                 child: Text('LOGIN'),
                                 style: ButtonStyle(
@@ -145,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             Padding(
-                                padding: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.all(1.0),
                                 child: ElevatedButton(
                                   child: Text('SIGNUP'),
                                   onPressed: _signup,

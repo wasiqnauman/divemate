@@ -51,15 +51,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Spacer(),
                     Image.asset(
-                        "images/spongebob-money.jpg",
+                        "assets/images/spongebob-money.jpg",
                         width: MediaQuery.of(context).size.width/ 3.1
                     ),
                     Image.asset(
-                        "images/money.png",
+                        "assets/images/money.png",
                         width: MediaQuery.of(context).size.width / 3.1
                     ),
                     Image.asset(
-                      "images/lokesh.png",
+                      "assets/images/lokesh.png",
                       width: MediaQuery.of(context).size.width / 3.1,
                     ),
                     Spacer(),
