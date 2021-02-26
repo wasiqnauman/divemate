@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:divemate/profile.dart';
+import 'package:divemate/log-list.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            return ProfilePage(email: user.email);
+            return LogList(email: user.email);
           })
       );
     }

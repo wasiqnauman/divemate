@@ -6,6 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:divemate/profile.dart';
 
 class LogList extends StatefulWidget {
+  String email;
+  LogList({email = ""}){
+    this.email = email;
+  }
+
   @override
   _LogList createState() => _LogList();
 }
@@ -32,7 +37,7 @@ class _LogList extends State<LogList> {
               //padding: EdgeInsets.only(top:100.0, left:100.0, right:100.0),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("images/turtle.jpg"),
+                    image: AssetImage("assets/images/turtle.jpg"),
                   )
               )
           ),
@@ -74,8 +79,8 @@ class _LogList extends State<LogList> {
                   appBar: AppBar(
                     bottom: TabBar(
                       tabs: [
-                        Tab(icon: ImageIcon(AssetImage("icons/log.png"))),
-                        Tab(icon: ImageIcon(AssetImage("icons/documents.png"))),
+                        Tab(icon: ImageIcon(AssetImage("assets/icons/log.png"))),
+                        Tab(icon: ImageIcon(AssetImage("assets/icons/documents.png"))),
                         Tab(icon: Icon(Icons.account_circle_outlined)),
                       ],
                     ),
@@ -86,8 +91,8 @@ class _LogList extends State<LogList> {
                         itemCount: this._numEntries,
                         itemBuilder: (context, index) => this._entry(index),
                       ),
-                      ImageIcon(AssetImage("icons/documents.png")),
-                      Icon(Icons.account_circle_outlined),
+                      ImageIcon(AssetImage("assets/icons/documents.png")),
+                      ProfilePage(email: widget.email),
                     ],
                   ),
                 )

@@ -39,7 +39,7 @@ class DivemateApp extends StatelessWidget {
               primarySwatch: Colors.lightBlue,
             ),
             // This is so app starts in login, will change later with authentication!
-            home: LogList(),
+            home: LoginPage(),
           );
         //}
 
