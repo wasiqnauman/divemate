@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:divemate/profile.dart';
 import 'package:divemate/log-list.dart';
 
 class LoginPage extends StatefulWidget {
@@ -71,6 +70,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // this _authListener can be replaced with the provider package in the future
+    // this is beacuse provider already has the stream with the authentication state
+    // this might be making it do it double, seeing it repeat in the console
     _authListener = _auth.authStateChanges().listen(_onAuthChange);
 
     return Scaffold(

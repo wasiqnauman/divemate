@@ -1,10 +1,13 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:toast/toast.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:toast/toast.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:divemate/profile.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'database.dart';
+import 'models.dart';
 
 class LogList extends StatefulWidget {
   @override
@@ -13,6 +16,7 @@ class LogList extends StatefulWidget {
 
 class _LogList extends State<LogList> {
   final _numEntries = 10;
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   _entry(int index){
     return Container(
@@ -59,12 +63,14 @@ class _LogList extends State<LogList> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    // uncomment this if you need user in this widget
     var user = Provider.of<User>(context);
+
+    // WORKING RIGHT NOW!!
+    // db.collection('dives').doc(user.uid).collection('list').doc('testdive').set({'location': 'testiweg', 'img': 'testing', 'comment':'testing'});
+    // print(db.collection('dives').doc(user.uid).collection('list').get());
+
     return Scaffold(
       //backgroundColor: Color.fromRGBO(187, 222, 220, 1),
       // Different types of layouts we can use here; still exploring...

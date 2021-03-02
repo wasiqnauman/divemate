@@ -29,9 +29,17 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //global user setup with provider package
     var user = Provider.of<User>(context);
+    if (user == null) {
+      return LoginPage();
+    }
 
     return Material(
         type: MaterialType.transparency,
