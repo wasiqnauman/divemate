@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
-
+import 'package:provider/provider.dart';
 import 'package:divemate/login.dart';
 
 class ProfilePage extends StatefulWidget {
-  String email;
-  ProfilePage({email = ""}){
-    this.email = email;
-  }
-
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -35,12 +30,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    //global user setup with provider package
+    var user = Provider.of<User>(context);
+
     return Material(
         type: MaterialType.transparency,
         child: Column(
             children: [
               Spacer(flex:2),
-              Text("Welcome ${widget.email} \nWe kindly request \$200K",
+              Text("Welcome ${user.email} \nWe kindly request \$200K",
                 style: TextStyle(
                   fontSize: 32,
                   color: Colors.blueAccent,

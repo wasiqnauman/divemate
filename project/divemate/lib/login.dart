@@ -49,11 +49,12 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       print('${user.email} is signed in!');
       Toast.show("Signed in!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) {
-            return LogList(email: user.email);
-          })
+            return LogList();
+          }),
+          (_) => false
       );
     }
   }

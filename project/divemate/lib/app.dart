@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 // Page imports
 import 'package:divemate/login.dart';
 import 'package:divemate/log-list.dart';
-
+import 'package:provider/provider.dart';
 
 class DivemateApp extends StatelessWidget {
   // Create the initialization Future outside of `build`:
@@ -16,7 +17,6 @@ class DivemateApp extends StatelessWidget {
       // Initialize FlutterFire:
       future: _initialization,
       builder: (context, snapshot) {
-
         // Check for errors
         /*if (snapshot.hasError) {
           return MaterialApp(
@@ -32,7 +32,13 @@ class DivemateApp extends StatelessWidget {
 
         // Once complete, show your application
         //if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
+        return MultiProvider(
+          providers: [
+            StreamProvider<User>.value(
+              value: FirebaseAuth.instance.authStateChanges()
+            )
+          ],
+          child: MaterialApp(
             title: 'Divemate',
             theme: ThemeData(
               // This is the theme of your application.
@@ -40,14 +46,14 @@ class DivemateApp extends StatelessWidget {
             ),
             // This is so app starts in login, will change later with authentication!
             home: LoginPage(),
-          );
+          ),
+        );
+
         //}
 
         // Otherwise, show something whilst waiting for initialization to complete
         //return Loading();
       },
     );
-
-
   }
 }

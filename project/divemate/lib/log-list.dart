@@ -4,13 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:divemate/profile.dart';
+import 'package:provider/provider.dart';
 
 class LogList extends StatefulWidget {
-  String email;
-  LogList({email = ""}){
-    this.email = email;
-  }
-
   @override
   _LogList createState() => _LogList();
 }
@@ -67,7 +63,8 @@ class _LogList extends State<LogList> {
 
   @override
   Widget build(BuildContext context) {
-
+    // uncomment this if you need user in this widget
+    var user = Provider.of<User>(context);
     return Scaffold(
       //backgroundColor: Color.fromRGBO(187, 222, 220, 1),
       // Different types of layouts we can use here; still exploring...
@@ -92,7 +89,7 @@ class _LogList extends State<LogList> {
                         itemBuilder: (context, index) => this._entry(index),
                       ),
                       ImageIcon(AssetImage("assets/icons/documents.png")),
-                      ProfilePage(email: widget.email),
+                      ProfilePage(),
                     ],
                   ),
                 )
