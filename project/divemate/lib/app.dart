@@ -50,6 +50,7 @@ class DivemateApp extends StatelessWidget {
           ],
           child: MaterialApp(
             title: 'Divemate',
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               // This is the theme of your application.
               primarySwatch: Colors.lightBlue,
