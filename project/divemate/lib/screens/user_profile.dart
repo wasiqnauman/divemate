@@ -87,7 +87,8 @@ class _UserProfileState extends State<UserProfile> {
                         icon: Icon(Icons.attach_money),
                         label: Text("Give 200K NOW!")),
                     TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () async =>
+                            {await FirebaseAuth.instance.signOut()},
                         icon: Icon(Icons.exit_to_app),
                         label: Text("Logout")),
                     // ProfileButton(Icons.settings, "Settings", null),
