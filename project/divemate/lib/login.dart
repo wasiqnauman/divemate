@@ -17,28 +17,25 @@ class _LoginPageState extends State<LoginPage> {
   StreamSubscription<void> _authListener;
   UserCredential _userCredential;
 
-
-  void _login() async{
+  void _login() async {
     try {
       _userCredential = await _auth.signInWithEmailAndPassword(
-          email: _usernameCtrl.text,
-          password: _passwordCtrl.text
-      );
+          email: _usernameCtrl.text, password: _passwordCtrl.text);
     } catch (e) {
       print(e.message);
-      Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+      Toast.show(e.message, context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
 
-  void _signup() async{
+  void _signup() async {
     try {
-      _userCredential =  await _auth.createUserWithEmailAndPassword(
-          email: _usernameCtrl.text,
-          password: _passwordCtrl.text
-      );
+      _userCredential = await _auth.createUserWithEmailAndPassword(
+          email: _usernameCtrl.text, password: _passwordCtrl.text);
     } catch (e) {
       print(e.message);
-      Toast.show(e.message, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+      Toast.show(e.message, context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
 
@@ -47,17 +44,14 @@ class _LoginPageState extends State<LoginPage> {
       print('No user is currently signed in.');
     } else {
       print('${user.email} is signed in!');
-      Toast.show("Signed in!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
-      Navigator.pushAndRemoveUntil(
-          context,
+      Toast.show("Signed in!", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-            return LogList();
-          }),
-          (_) => false
-      );
+        return LogList();
+      }), (_) => false);
     }
   }
-
 
   @override
   void dispose() {
@@ -76,8 +70,8 @@ class _LoginPageState extends State<LoginPage> {
     _authListener = _auth.authStateChanges().listen(_onAuthChange);
 
     return Scaffold(
-      //backgroundColor: Color.fromRGBO(187, 222, 220, 1),
-      // Different types of layouts we can use here; still exploring...
+        //backgroundColor: Color.fromRGBO(187, 222, 220, 1),
+        // Different types of layouts we can use here; still exploring...
         body: SafeArea(
             child: Container(
                 decoration: BoxDecoration(
@@ -86,40 +80,34 @@ class _LoginPageState extends State<LoginPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child:
-
-                Container(
-                  margin: EdgeInsets.fromLTRB(20,175,20,200),
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(20, 175, 20, 200),
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(169,169,169, 0.8),
+                    color: Color.fromRGBO(169, 169, 169, 0.8),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: Colors.black,
                       width: 1,
                     ),
                   ),
-                  child:
-
-
-                  ListView(
-                    // ListView is needed as a wrapper to add padding and better control
-                      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0),
+                  child: ListView(
+                      // ListView is needed as a wrapper to add padding and better control
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 40.0, vertical: 40.0),
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            Row(
-                                children: [
-                                  Spacer(),
-                                  Text(
-                                    'Divemate',
-                                    style: GoogleFonts.lato(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white
-                                    ),
-                                  ),
-                                  Spacer(),
-                                ]),
+                            Row(children: [
+                              Spacer(),
+                              Text(
+                                'Divemate',
+                                style: GoogleFonts.lato(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              Spacer(),
+                            ]),
                             TextField(
                               controller: _usernameCtrl,
                               decoration: InputDecoration(
@@ -138,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: ElevatedButton(
                                 child: Text('LOGIN'),
                                 style: ButtonStyle(
-                                  // Still exploring button styles
-                                ),
+                                    // Still exploring button styles
+                                    ),
                                 onPressed: _login,
                               ),
                             ),
@@ -148,14 +136,10 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   child: Text('SIGNUP'),
                                   onPressed: _signup,
-                                )
-                            ),
+                                )),
                           ],
                         ),
-                      ]
-                  ),)
-            )
-        )
-    );
+                      ]),
+                ))));
   }
 }
