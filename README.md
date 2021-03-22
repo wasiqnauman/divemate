@@ -6,7 +6,7 @@
           - Wasiq Nauman
           - Luis Sosa 🧐
           - Renzo Pederzoli ✔
-          - Ananya Bhargava
+          - Ananya Bhargava ✔
 
 ### How to get started on the project:  
 
