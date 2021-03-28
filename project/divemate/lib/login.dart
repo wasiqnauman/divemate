@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:divemate/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
@@ -6,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:divemate/log-list.dart';
 
 class LoginPage extends StatefulWidget {
+  static final id = "login_page";
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -137,6 +139,8 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text('SIGNUP'),
                                   onPressed: _signup,
                                 )),
+                            createButton('Go to new Login Screen',
+                                () => Navigator.pop(context)),
                           ],
                         ),
                       ]),

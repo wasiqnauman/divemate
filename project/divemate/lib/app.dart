@@ -1,8 +1,11 @@
+import 'package:divemate/login.dart';
+import 'package:divemate/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // Page imports
-import 'package:divemate/login.dart';
+import 'package:divemate/screens/login_screen.dart';
+import 'package:divemate/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
 
 /*
@@ -23,11 +26,11 @@ class DivemateApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return FutureBuilder(
-      // Initialize FlutterFire:
-      // future: _initialization,
-      // builder: (context, snapshot) {
-        // Check for errors
-        /*if (snapshot.hasError) {
+    // Initialize FlutterFire:
+    // future: _initialization,
+    // builder: (context, snapshot) {
+    // Check for errors
+    /*if (snapshot.hasError) {
           return MaterialApp(
             builder: (BuildContext context, Widget widget) {
             Widget error = Text('...rendering error...');
@@ -39,32 +42,31 @@ class DivemateApp extends StatelessWidget {
         );
         }*/
 
-        // Once complete, show your application
-        //if (snapshot.connectionState == ConnectionState.done) {
-        // MultiProvider is what allows the stream to be available from anywhere
-        return MultiProvider(
-          providers: [
-            StreamProvider<User>.value(
-              value: FirebaseAuth.instance.authStateChanges()
-            )
-          ],
-          child: MaterialApp(
-            title: 'Divemate',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              // This is the theme of your application.
-              primarySwatch: Colors.lightBlue,
-            ),
-            // This is so app starts in login, will change later with authentication!
-            home: LoginPage(),
-          ),
-        );
+    // Once complete, show your application
+    //if (snapshot.connectionState == ConnectionState.done) {
+    // MultiProvider is what allows the stream to be available from anywhere
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>.value(
+            value: FirebaseAuth.instance.authStateChanges())
+      ],
+      child: MaterialApp(
+        title: 'Divemate',
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
+        routes: {
+          LoginScreen.id: (context) => LoginScreen(),
+          SignupScreen.id: (context) => SignupScreen(),
+          LoginPage.id: (context) => LoginPage(),
+        },
+      ),
+    );
 
-        //}
+    //}
 
-        // Otherwise, show something whilst waiting for initialization to complete
-        //return Loading();
-      }
-    // );
+    // Otherwise, show something whilst waiting for initialization to complete
+    //return Loading();
   }
+  // );
+}
 // }
