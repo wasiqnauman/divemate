@@ -1,5 +1,11 @@
+import 'dart:async';
+
 import 'package:divemate/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
+
+import '../log-list.dart';
 
 class SignupScreen extends StatefulWidget {
   static final id = 'signup_screen';
@@ -9,10 +15,45 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  StreamSubscription<void> _authListener;
+  UserCredential _userCredential;
+
   final _formkey = GlobalKey<FormState>();
   String _email;
   String _password;
   String _name;
+
+  _signup() async {
+    try {
+      _userCredential = await _auth.createUserWithEmailAndPassword(
+          email: _email, password: _password);
+    } catch (e) {
+      print(e.message);
+      Toast.show(e.message, context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
+  }
+
+  void _onAuthChange(User user) {
+    if (user == null) {
+      print('No user is currently signed in.');
+    } else {
+      print('${user.email} is signed in!');
+      Toast.show("Signed in!", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return LogList();
+      }), (_) => false);
+    }
+  }
+
+  void dispose() {
+    // Clean up controllers when the widget is disposed.
+    _authListener.cancel();
+    super.dispose();
+  }
 
   _submit() {
     if (_formkey.currentState.validate()) {
@@ -21,11 +62,14 @@ class _SignupScreenState extends State<SignupScreen> {
       print(_email);
       print(_password);
       // login the user here
+      _signup();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    _authListener = _auth.authStateChanges().listen(_onAuthChange);
+
     return Scaffold(
       body: Center(
         child: Column(

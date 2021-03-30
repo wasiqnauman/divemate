@@ -1,8 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:divemate/login.dart';
 import 'package:divemate/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:divemate/screens/signup_screen.dart';
+import 'package:toast/toast.dart';
+
+import '../log-list.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = 'login_screen';
@@ -12,9 +17,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  StreamSubscription<void> _authListener;
+  UserCredential _userCredential;
+
   final _formkey = GlobalKey<FormState>();
   String _email;
   String _password;
+
+  _login() async {
+    try {
+      _userCredential = await _auth.signInWithEmailAndPassword(
+          email: _email, password: _password);
+    } catch (e) {
+      print(e.message);
+      Toast.show(e.message, context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
+  }
 
   _submit() {
     if (_formkey.currentState.validate()) {
@@ -23,11 +43,34 @@ class _LoginScreenState extends State<LoginScreen> {
       print(_password);
 
       // Login the user here using firebase
+      _login();
     }
+  }
+
+  _onAuthChange(User user) {
+    if (user == null) {
+      print('No user is currently signed in.');
+    } else {
+      print('${user.email} is signed in!');
+      Toast.show("Signed in!", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return LogList();
+      }), (_) => false);
+    }
+  }
+
+  void dispose() {
+    // Clean up controllers when the widget is disposed.
+    _authListener.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _authListener = _auth.authStateChanges().listen(_onAuthChange);
+
     return Scaffold(
       body: Center(
         child: Column(
