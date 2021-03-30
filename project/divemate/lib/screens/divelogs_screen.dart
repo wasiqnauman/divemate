@@ -15,7 +15,7 @@ class DiveLogsScreen extends StatefulWidget {
 
 class _DiveLogsScreen extends State<DiveLogsScreen> {
   final db = DatabaseService();
-  dynamic testDive = {'name': 'TEST & CAICOS', 'img': 'LINK_TO_IMG', 'comment': 'AWESOME TEST'};
+  dynamic testDive = {'location': 'TEST & CAICOS', 'img': 'LINK_TO_IMG', 'comment': 'AWESOME TEST'};
 
   @override
   Widget build(BuildContext context) {
