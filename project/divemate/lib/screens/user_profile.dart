@@ -1,3 +1,4 @@
+import 'package:divemate/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
@@ -16,7 +17,7 @@ class _UserProfileState extends State<UserProfile> {
     try {
       await _auth.signOut();
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return LoginPage();
+        return LoginScreen();
       }));
     } catch (e) {
       print(e.message);

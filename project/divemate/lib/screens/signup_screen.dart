@@ -36,7 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  _onSuccess(User user) async {
+  _onSuccess(User user) async { // yikes very sketchy
     await _auth.signOut();
     await _auth.signInWithEmailAndPassword(email: _email, password: _password);
 

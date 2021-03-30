@@ -48,7 +48,6 @@ class _LogList extends State<LogList> {
                   appBar: AppBar(
                     title: Text("Divemate",
                         style: TextStyle(
-                            color: const Color(0xffecf0f1),
                             fontWeight: FontWeight.bold,
                             fontSize: 23)),
                     centerTitle: true,

@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:divemate/login.dart';
+import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:divemate/screens/signup_screen.dart';
 import 'package:toast/toast.dart';
-
-import '../log-list.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = 'login_screen';
@@ -56,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return LogList();
+        return HomeScreen();
       }), (_) => false);
     }
   }

@@ -6,16 +6,16 @@ import '../database.dart';
 import '../models.dart';
 import '../widgets/widgets_for_lists.dart';
 
-class DocumentsScreen extends StatefulWidget {
-  static final String id = 'documents_screen';
+class DiveLogsScreen extends StatefulWidget {
+  static final String id = 'divelogs_screen';
 
   @override
-  _DocumentsScreen createState() => _DocumentsScreen();
+  _DiveLogsScreen createState() => _DiveLogsScreen();
 }
 
-class _DocumentsScreen extends State<DocumentsScreen> {
+class _DiveLogsScreen extends State<DiveLogsScreen> {
   final db = DatabaseService();
-  dynamic testDocument = {'name': 'PADI LICENSE', 'img': 'LINK_TO_IMG', 'comment': 'PADI_ID'};
+  dynamic testDive = {'name': 'TEST & CAICOS', 'img': 'LINK_TO_IMG', 'comment': 'AWESOME TEST'};
 
   @override
   Widget build(BuildContext context) {
@@ -26,22 +26,22 @@ class _DocumentsScreen extends State<DocumentsScreen> {
 
     return Material(
       child: Container(
-        child: StreamBuilder<List<Document>>(
-          stream: db.streamDocuments(user),
+        child: StreamBuilder<List<Dive>>(
+          stream: db.streamDives(user),
           builder: (context, snapshot) {
-            var documents = snapshot.data;
-            if (documents?.isNotEmpty ?? false) { // makes sure the data is not null
+            var dives = snapshot.data;
+            if (dives?.isNotEmpty ?? false) { // makes sure the data is not null
               return Scaffold(
                 backgroundColor: const Color(0xffecf0f1),
                 body: Text("WAIT"),
-                floatingActionButton: floatingButton(() => db.addDocument(user, testDocument), "assets/icons/documents.png"),
+                floatingActionButton: floatingButton(() => db.addDive(user, testDive), "assets/icons/log.png"),
               );
             } else {
               return Container(
                 alignment: Alignment(0.0, 0.0),
                 child: ElevatedButton(
-                  child: Text("Add Document"),
-                  onPressed: () => db.addDocument(user, testDocument),
+                  child: Text("Add Dive"),
+                  onPressed: () => db.addDive(user, testDive),
                 ),
               );
             }

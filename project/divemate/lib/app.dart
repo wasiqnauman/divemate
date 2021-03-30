@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:divemate/screens/login_screen.dart';
 import 'package:divemate/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:divemate/theme.dart';
 
 /*
 * NOTEEEEEE
@@ -52,6 +53,7 @@ class DivemateApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Divemate',
+        theme: appTheme(),
         debugShowCheckedModeBanner: false,
         home: LoginScreen(),
         routes: {
