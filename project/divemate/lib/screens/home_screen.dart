@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import '../database.dart';
 
 class HomeScreen extends StatefulWidget {
+  static final String id = 'home_screen';
+
   @override
   _HomeScreen createState() => _HomeScreen();
 }

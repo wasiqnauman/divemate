@@ -43,12 +43,12 @@ Widget createButton(String _label, Function _action) {
     child: TextButton(
         onPressed: _action,
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            backgroundColor: MaterialStateProperty.all<Color>(Color(0xffa9cfd8)),
             padding:
                 MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10.0))),
         child: Text(
           _label,
-          style: TextStyle(fontSize: 18.0, color: Colors.white),
+          style: TextStyle(fontSize: 18.0, color: Colors.black),
         )),
   );
 }

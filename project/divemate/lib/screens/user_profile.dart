@@ -78,21 +78,21 @@ class _UserProfileState extends State<UserProfile> {
                     // *** ADD FUNCTION DEFINITIONS FOR THE BUTTONS ***
                     TextButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.settings),
-                        label: Text("Settings")),
+                        icon: Icon(Icons.settings, color: Colors.black,),
+                        label: Text("Settings", style: TextStyle(color: Colors.black),)),
                     TextButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.history),
-                        label: Text("Dive history")),
+                        icon: Icon(Icons.history, color: Colors.black,),
+                        label: Text("Dive history", style: TextStyle(color: Colors.black),)),
                     TextButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.attach_money),
-                        label: Text("Give 200K NOW!")),
+                        icon: Icon(Icons.attach_money, color: Colors.black,),
+                        label: Text("Give 200K NOW!", style: TextStyle(color: Colors.black),)),
                     TextButton.icon(
                         onPressed: () async =>
                             {await FirebaseAuth.instance.signOut()},
-                        icon: Icon(Icons.exit_to_app),
-                        label: Text("Logout")),
+                        icon: Icon(Icons.exit_to_app, color: Colors.black,),
+                        label: Text("Logout", style: TextStyle(color: Colors.black),)),
                     // ProfileButton(Icons.settings, "Settings", null),
                     // ProfileButton(Icons.history, "Dive History", null),
                     // ProfileButton(
