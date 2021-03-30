@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
@@ -35,17 +36,29 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+  _onSuccess(User user) async {
+    await _auth.signOut();
+    await _auth.signInWithEmailAndPassword(email: _email, password: _password);
+
+    print('${user.displayName} is signed in!');
+    Toast.show("Signed in!", context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+      return LogList();
+    }), (_) => false);
+  }
+
+  _update(User user) async {
+    await user.updateProfile(
+      displayName: _name,
+    );
+  }
+
   void _onAuthChange(User user) {
     if (user == null) {
       print('No user is currently signed in.');
     } else {
-      print('${user.email} is signed in!');
-      Toast.show("Signed in!", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) {
-        return LogList();
-      }), (_) => false);
+      _update(user).then((s) => _onSuccess(user)).catchError((e) => print(e));
     }
   }
 

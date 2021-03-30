@@ -33,7 +33,8 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
-    String username = user.email.substring(0, user.email.indexOf('@'));
+    String subUsername = user.email.substring(0, user.email.indexOf('@'));
+    String username = user.displayName != null ? user.displayName : subUsername;
     if (user == null) {
       return LoginPage();
     }
