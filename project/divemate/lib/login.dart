@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:divemate/screens/login_screen.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -140,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: _signup,
                                 )),
                             createButton('Go to new Login Screen',
-                                () => Navigator.pop(context)),
+                                () => Navigator.pushNamed(context, LoginScreen.id)),
                           ],
                         ),
                       ]),

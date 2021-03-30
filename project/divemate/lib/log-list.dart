@@ -1,3 +1,5 @@
+import 'package:divemate/screens/documents_screen.dart';
+import 'package:divemate/screens/login_screen.dart';
 import 'package:divemate/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +31,7 @@ class _LogList extends State<LogList> {
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
     if (user == null) {
-      return LoginPage();
+      return LoginScreen();
     }
     /* The tab bar view below is a bit messy but we can extract
       each inidvidual dive tile as a widget to clean it up later.
@@ -68,7 +70,7 @@ class _LogList extends State<LogList> {
                         stream: db.streamDives(user),
                         builder: (context, snapshot) {
                           var dives = snapshot.data;
-                          if (dives != null) {
+                          if (dives?.isNotEmpty ?? false) { // makes sure the data is not null
                             return Column(children: [
                               SizedBox(
                                 child: ElevatedButton(
@@ -151,7 +153,7 @@ class _LogList extends State<LogList> {
                           }
                         },
                       ),
-                      ImageIcon(AssetImage("assets/icons/documents.png")),
+                      DocumentsScreen(),
                       UserProfile(),
                     ],
                   ),

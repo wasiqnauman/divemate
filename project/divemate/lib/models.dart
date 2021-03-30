@@ -21,3 +21,23 @@ class Dive {
     );
   }
 }
+
+class Document {
+  final String id;
+  final String name;
+  final String img;
+  final String comment;
+
+  Document({this.id, this.name, this.img, this.comment});
+
+  factory Document.fromFireStore(DocumentSnapshot doc) {
+    Map data = doc.data();
+
+    return Document(
+      id: doc.id,
+      name: data['name'] ?? '',
+      img: data['img'] ?? '',
+      comment: data['comment'] ?? '',
+    );
+  }
+}
