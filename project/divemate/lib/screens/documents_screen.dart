@@ -33,7 +33,7 @@ class _DocumentsScreen extends State<DocumentsScreen> {
             if (documents?.isNotEmpty ?? false) { // makes sure the data is not null
               return Scaffold(
                 backgroundColor: const Color(0xffecf0f1),
-                body: Text("WAIT"),
+                body: customListViewDocuments(documents, user, context),
                 floatingActionButton: floatingButton(() => db.addDocument(user, testDocument), "assets/icons/documents.png"),
               );
             } else {
