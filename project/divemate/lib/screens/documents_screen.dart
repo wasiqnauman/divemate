@@ -15,7 +15,11 @@ class DocumentsScreen extends StatefulWidget {
 
 class _DocumentsScreen extends State<DocumentsScreen> {
   final db = DatabaseService();
-  dynamic testDocument = {'name': 'PADI LICENSE', 'img': 'LINK_TO_IMG', 'comment': 'PADI_ID'};
+  dynamic testDocument = {
+    'name': 'PADI LICENSE',
+    'img': 'LINK_TO_IMG',
+    'comment': 'PADI_ID'
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +34,34 @@ class _DocumentsScreen extends State<DocumentsScreen> {
           stream: db.streamDocuments(user),
           builder: (context, snapshot) {
             var documents = snapshot.data;
-            if (documents?.isNotEmpty ?? false) { // makes sure the data is not null
+            if (documents?.isNotEmpty ?? false) {
+              // makes sure the data is not null
               return Scaffold(
                 backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDocuments(documents, user, context),
-                floatingActionButton: floatingButton(() => db.addDocument(user, testDocument), "assets/icons/documents.png"),
+                floatingActionButton: floatingButton(
+                    () => db.addDocument(user, testDocument),
+                    "assets/icons/documents.png"),
               );
             } else {
-              return Container(
-                alignment: Alignment(0.0, 0.0),
-                child: ElevatedButton(
-                  child: Text("Add Document"),
-                  onPressed: () => db.addDocument(user, testDocument),
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    "Click the button below to add a new document",
+                    style: TextStyle(color: Color(0xfff6c7a89)),
+                  ),
                 ),
+                floatingActionButton: floatingButton(
+                    () => db.addDocument(user, testDocument),
+                    "assets/icons/documents.png"),
               );
+              // return Container(
+              //   alignment: Alignment(0.0, 0.0),
+              //   child: ElevatedButton(
+              //     child: Text("Add Document"),
+              //     onPressed: () => db.addDocument(user, testDocument),
+              //   ),
+              // );
             }
           },
         ),

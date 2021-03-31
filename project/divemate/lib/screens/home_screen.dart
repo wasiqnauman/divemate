@@ -36,22 +36,39 @@ class _HomeScreen extends State<HomeScreen> {
                 length: 3,
                 child: Scaffold(
                   appBar: AppBar(
-                    title: Text("Divemate",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 23)),
-                    centerTitle: true,
-                    bottom: TabBar(
-                      tabs: [
-                        Tab(
-                            icon:
-                                ImageIcon(AssetImage("assets/icons/log.png"))),
-                        Tab(
-                            icon: ImageIcon(
-                                AssetImage("assets/icons/documents.png"))),
-                        Tab(icon: Icon(Icons.account_circle_outlined)),
-                      ],
+                    backgroundColor: Theme.of(context).canvasColor,
+                    title: Text(
+                      'Divemate',
+                      style: TextStyle(fontFamily: 'Billabong', fontSize: 38.0),
                     ),
+                    centerTitle: true,
                   ),
+                  bottomNavigationBar: TabBar(
+                    tabs: [
+                      Tab(icon: ImageIcon(AssetImage("assets/icons/log.png"))),
+                      Tab(
+                          icon: ImageIcon(
+                              AssetImage("assets/icons/documents.png"))),
+                      Tab(icon: Icon(Icons.account_circle_outlined)),
+                    ],
+                  ),
+
+                  // // title: Text("Divemate",
+                  // //     style: TextStyle(
+                  // //         fontWeight: FontWeight.bold, fontSize: 23)),
+                  // centerTitle: true,
+                  //   bottom: TabBar(
+                  //     tabs: [
+                  //       Tab(
+                  //           icon:
+                  //               ImageIcon(AssetImage("assets/icons/log.png"))),
+                  //       Tab(
+                  //           icon: ImageIcon(
+                  //               AssetImage("assets/icons/documents.png"))),
+                  //       Tab(icon: Icon(Icons.account_circle_outlined)),
+                  //     ],
+                  //   ),
+                  // ),
                   body: TabBarView(
                     children: [
                       DiveLogsScreen(),
@@ -59,9 +76,6 @@ class _HomeScreen extends State<HomeScreen> {
                       UserProfile(),
                     ],
                   ),
-                )
-            )
-        )
-    );
+                ))));
   }
 }

@@ -15,7 +15,11 @@ class DiveLogsScreen extends StatefulWidget {
 
 class _DiveLogsScreen extends State<DiveLogsScreen> {
   final db = DatabaseService();
-  dynamic testDive = {'location': 'TEST & CAICOS', 'img': 'LINK_TO_IMG', 'comment': 'AWESOME TEST'};
+  dynamic testDive = {
+    'location': 'TEST & CAICOS',
+    'img': 'LINK_TO_IMG',
+    'comment': 'AWESOME TEST'
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -30,24 +34,36 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
           stream: db.streamDives(user),
           builder: (context, snapshot) {
             var dives = snapshot.data;
-            if (dives?.isNotEmpty ?? false) { // makes sure the data is not null
+            if (dives?.isNotEmpty ?? false) {
+              // makes sure the data is not null
               return Scaffold(
                 backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDives(dives, user, context),
-                floatingActionButton: floatingButton(() => db.addDive(user, testDive), "assets/icons/log.png"),
+                floatingActionButton: floatingButton(
+                    () => db.addDive(user, testDive), "assets/icons/log.png"),
               );
             } else {
-              return Container(
-                alignment: Alignment(0.0, 0.0),
-                child: ElevatedButton( //separate this into a widget
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xffa9cfd8)),
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+              return Scaffold(
+                body: Center(
+                  child: Text(
+                    "Click the button below to add a new dive",
+                    style: TextStyle(color: Color(0xfff6c7a89)),
                   ),
-                  child: Text("Add Dive"),
-                  onPressed: () => db.addDive(user, testDive),
                 ),
+                floatingActionButton: floatingButton(
+                    () => db.addDive(user, testDive), "assets/icons/log.png"),
               );
+              //   return Container(
+              //     alignment: Alignment(0.0, 0.0),
+              //     child: ElevatedButton( //separate this into a widget
+              //       style: ButtonStyle(
+              //         backgroundColor: MaterialStateProperty.all<Color>(Color(0xffa9cfd8)),
+              //         foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+              //       ),
+              //       child: Text("Add Dive"),
+              //       onPressed: () => db.addDive(user, testDive),
+              //     ),
+              //   );
             }
           },
         ),

@@ -41,7 +41,6 @@ class _UserProfileState extends State<UserProfile> {
     }
     return Material(
       child: Container(
-        color: const Color(0xffecf0f1),
         child: Container(
           margin: const EdgeInsets.all(30),
           child: Column(
@@ -78,21 +77,47 @@ class _UserProfileState extends State<UserProfile> {
                     // *** ADD FUNCTION DEFINITIONS FOR THE BUTTONS ***
                     TextButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.settings, color: Colors.black,),
-                        label: Text("Settings", style: TextStyle(color: Colors.black),)),
+                        icon: Icon(
+                          Icons.settings,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          "Settings",
+                          style: TextStyle(color: Colors.black),
+                        )),
+                    TextButton.icon(
+                        onPressed: () {
+                          DefaultTabController.of(context).animateTo(0);
+                        },
+                        icon: Icon(
+                          Icons.history,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          "Dive history",
+                          style: TextStyle(color: Colors.black),
+                        )),
                     TextButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.history, color: Colors.black,),
-                        label: Text("Dive history", style: TextStyle(color: Colors.black),)),
-                    TextButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.attach_money, color: Colors.black,),
-                        label: Text("Give 200K NOW!", style: TextStyle(color: Colors.black),)),
+                        icon: Icon(
+                          Icons.attach_money,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          "Give 200K NOW!",
+                          style: TextStyle(color: Colors.black),
+                        )),
                     TextButton.icon(
                         onPressed: () async =>
                             {await FirebaseAuth.instance.signOut()},
-                        icon: Icon(Icons.exit_to_app, color: Colors.black,),
-                        label: Text("Logout", style: TextStyle(color: Colors.black),)),
+                        icon: Icon(
+                          Icons.exit_to_app,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          "Logout",
+                          style: TextStyle(color: Colors.black),
+                        )),
                     // ProfileButton(Icons.settings, "Settings", null),
                     // ProfileButton(Icons.history, "Dive History", null),
                     // ProfileButton(
