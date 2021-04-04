@@ -1,3 +1,4 @@
+import 'package:divemate/screens/document_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,7 +41,8 @@ class _DocumentsScreen extends State<DocumentsScreen> {
                 backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDocuments(documents, user, context),
                 floatingActionButton: floatingButton(
-                    () => db.addDocument(user, testDocument),
+                    () => Navigator.pushNamed(context, DocumentForm.id),
+                    // () => db.addDocument(user, testDocument),
                     "assets/icons/documents.png"),
               );
             } else {
@@ -52,7 +54,8 @@ class _DocumentsScreen extends State<DocumentsScreen> {
                   ),
                 ),
                 floatingActionButton: floatingButton(
-                    () => db.addDocument(user, testDocument),
+                    () => Navigator.pushNamed(context, DocumentForm.id),
+                    // () => db.addDocument(user, testDocument),
                     "assets/icons/documents.png"),
               );
               // return Container(
