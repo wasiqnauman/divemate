@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:divemate/login.dart';
 import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -114,9 +112,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     createButton('Signup',
                         () => Navigator.pushNamed(context, SignupScreen.id)),
-                    SizedBox(height: 20.0),
-                    createButton('Go to old login screen',
-                        () => Navigator.pushNamed(context, LoginPage.id)),
                   ],
                 ))
           ],

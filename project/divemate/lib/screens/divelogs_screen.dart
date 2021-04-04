@@ -37,7 +37,6 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
             if (dives?.isNotEmpty ?? false) {
               // makes sure the data is not null
               return Scaffold(
-                backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDives(dives, user, context),
                 floatingActionButton: floatingButton(
                     () => db.addDive(user, testDive), "assets/icons/log.png"),

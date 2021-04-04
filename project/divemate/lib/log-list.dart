@@ -3,15 +3,9 @@ import 'package:divemate/screens/login_screen.dart';
 import 'package:divemate/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:toast/toast.dart';
-// import 'package:google_fonts/google_fonts.dart';
-import 'package:divemate/profile.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'database.dart';
 import 'models.dart';
-import 'package:divemate/login.dart';
 
 class LogList extends StatefulWidget {
   @override
@@ -48,8 +42,7 @@ class _LogList extends State<LogList> {
                   appBar: AppBar(
                     title: Text("Divemate",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 23)),
+                            fontWeight: FontWeight.bold, fontSize: 23)),
                     centerTitle: true,
                     bottom: TabBar(
                       tabs: [
@@ -69,7 +62,8 @@ class _LogList extends State<LogList> {
                         stream: db.streamDives(user),
                         builder: (context, snapshot) {
                           var dives = snapshot.data;
-                          if (dives?.isNotEmpty ?? false) { // makes sure the data is not null
+                          if (dives?.isNotEmpty ?? false) {
+                            // makes sure the data is not null
                             return Column(children: [
                               SizedBox(
                                 child: ElevatedButton(

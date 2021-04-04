@@ -140,8 +140,10 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text('SIGNUP'),
                                   onPressed: _signup,
                                 )),
-                            createButton('Go to new Login Screen',
-                                () => Navigator.pushNamed(context, LoginScreen.id)),
+                            createButton(
+                                'Go to new Login Screen',
+                                () => Navigator.pushNamed(
+                                    context, LoginScreen.id)),
                           ],
                         ),
                       ]),

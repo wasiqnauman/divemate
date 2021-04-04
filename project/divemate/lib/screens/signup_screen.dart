@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
@@ -36,7 +35,8 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  _onSuccess(User user) async { // yikes very sketchy
+  _onSuccess(User user) async {
+    // yikes very sketchy
     await _auth.signOut();
     await _auth.signInWithEmailAndPassword(email: _email, password: _password);
 

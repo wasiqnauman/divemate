@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // Page imports
-import 'package:divemate/screens/login_screen.dart';
 import 'package:divemate/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:divemate/theme.dart';

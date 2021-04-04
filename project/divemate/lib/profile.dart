@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:divemate/login.dart';
-import 'package:divemate/screens/user_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
