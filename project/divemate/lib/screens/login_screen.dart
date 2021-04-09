@@ -17,8 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   StreamSubscription<void> _authListener;
   UserCredential _userCredential;
-
-  final _formkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formkey = new GlobalKey<FormState>();
   String _email;
   String _password;
 
