@@ -52,7 +52,8 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
 
   deleteTile(int index) {
     db.removeDive(user, _arr[index].id);
-    Toast.show("Successfully Deleted", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Successfully Deleted", context,
+        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
   // TODO: Have to sort _arr when actual dives are logged, so latest dive is on top
@@ -62,7 +63,8 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
     itemBuilder: (BuildContext context, int index) {
       return ListTile(
         tileColor: Color(0xff7499a1),
-        leading: Icon(// users image should go here
+        leading: Icon(
+          // users image should go here
           Icons.image,
           size: 60,
         ),
@@ -94,7 +96,8 @@ Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
 
   deleteTile(int index) {
     db.removeDocument(user, _arr[index].id);
-    Toast.show("Successfully Deleted", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Document Deleted", context,
+        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
   // TODO: Have to sort _arr when actual dives are logged, so latest dive is on top
@@ -103,14 +106,16 @@ Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
     itemCount: _arr.length,
     itemBuilder: (BuildContext context, int index) {
       return ListTile(
-        tileColor: Color(0xffd8b7a9),
-        leading: Icon( // document image should go here
+        // tileColor: Color(0xffd8b7a9),
+        tileColor: Color(0xffbdc3c7),
+        leading: Icon(
+          // document image should go here
           Icons.image,
           size: 60,
         ),
         title: Text(_arr[index].name),
         subtitle: Text(
-          "INFO ON DOCUMENT HERE ${_arr[index].comment}",
+          "${_arr[index].comment}\nType:",
         ),
         trailing: IconButton(
           onPressed: () => deleteTile(index),

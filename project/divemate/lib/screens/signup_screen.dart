@@ -1,12 +1,10 @@
 import 'dart:async';
 
+import 'package:divemate/screens/documents_screen.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
-import '../log-list.dart';
 
 class SignupScreen extends StatefulWidget {
   static final id = 'signup_screen';
@@ -36,7 +34,8 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  _onSuccess(User user) async { // yikes very sketchy
+  _onSuccess(User user) async {
+    // yikes very sketchy
     await _auth.signOut();
     await _auth.signInWithEmailAndPassword(email: _email, password: _password);
 
@@ -44,7 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
     Toast.show("Signed in!", context,
         duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-      return LogList();
+      return DocumentsScreen();
     }), (_) => false);
   }
 
