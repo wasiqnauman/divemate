@@ -95,8 +95,6 @@ class _DocumentFormState extends State<DocumentForm> {
                         Text('Document Type:'),
                         DropdownButton<String>(
                           value: _dropdownValue,
-                          icon: const Icon(Icons.arrow_downward),
-                          iconSize: 24,
                           elevation: 16,
                           style: const TextStyle(color: Colors.deepPurple),
                           onChanged: (String newValue) {
@@ -104,7 +102,7 @@ class _DocumentFormState extends State<DocumentForm> {
                               _dropdownValue = newValue;
                             });
                           },
-                          items: <String>['License', 'Two', 'Free', 'Four']
+                          items: <String>['License', 'Gear-info', 'PR-Record']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -115,8 +113,9 @@ class _DocumentFormState extends State<DocumentForm> {
                       ],
                     ),
 
-                    ElevatedButton(
-                        onPressed: () => _submit(user), child: Text("submit")),
+                    createButton('Submit', () => _submit(user)),
+                    // ElevatedButton(
+                    //     onPressed: () => _submit(user), child: Text("submit")),
                     // // create the password textfield
                     // createTextField(
                     //     'Comment',

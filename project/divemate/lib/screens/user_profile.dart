@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
-import 'package:divemate/login.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -37,7 +36,7 @@ class _UserProfileState extends State<UserProfile> {
     String subUsername = user.email.substring(0, user.email.indexOf('@'));
     String username = user.displayName != null ? user.displayName : subUsername;
     if (user == null) {
-      return LoginPage();
+      return LoginScreen();
     }
     return Material(
       child: Container(
