@@ -96,7 +96,7 @@ Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
 
   deleteTile(int index) {
     db.removeDocument(user, _arr[index].id);
-    Toast.show("Successfully Deleted", context,
+    Toast.show("Document Deleted", context,
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
@@ -115,7 +115,7 @@ Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
         ),
         title: Text(_arr[index].name),
         subtitle: Text(
-          "INFO ON DOCUMENT HERE ${_arr[index].comment}",
+          "${_arr[index].comment}\nType:",
         ),
         trailing: IconButton(
           onPressed: () => deleteTile(index),

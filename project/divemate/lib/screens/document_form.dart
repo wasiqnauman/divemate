@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'package:divemate/database.dart';
 import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:divemate/screens/signup_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+
+import 'login_screen.dart';
 
 class DocumentForm extends StatefulWidget {
   static final String id = 'document_form';
@@ -21,21 +25,33 @@ class _DocumentFormState extends State<DocumentForm> {
   String _comment;
   String _documentType;
 
+  String _dropdownValue = 'License';
+
   void dispose() {
     // Clean up controllers when the widget is disposed.
     super.dispose();
   }
 
-  void _submit() {
+  void _submit(User user) {
     if (_documentKey.currentState.validate()) {
       _documentKey.currentState.save();
       print(_documentName);
       print(_comment);
+      DatabaseService().addDocument(user, {
+        'name': _documentName,
+        'comment': _comment,
+        'type': 'Type of document',
+      });
+      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<User>(context);
+    if (user == null) {
+      return LoginScreen();
+    }
     return Scaffold(
       body: Center(
         child: Column(
@@ -72,8 +88,35 @@ class _DocumentFormState extends State<DocumentForm> {
                             : null,
                         (input) => _comment = input,
                         false),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Document Type:'),
+                        DropdownButton<String>(
+                          value: _dropdownValue,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.deepPurple),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              _dropdownValue = newValue;
+                            });
+                          },
+                          items: <String>['License', 'Two', 'Free', 'Four']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+
                     ElevatedButton(
-                        onPressed: () => _submit(), child: Text("submit")),
+                        onPressed: () => _submit(user), child: Text("submit")),
                     // // create the password textfield
                     // createTextField(
                     //     'Comment',
