@@ -17,10 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   StreamSubscription<void> _authListener;
   UserCredential _userCredential;
-
-  final _formkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formkey = new GlobalKey<FormState>();
   String _email;
   String _password;
+  final snackBar = SnackBar(content: Text("Sign in successful!"));
 
   _login() async {
     try {
@@ -51,10 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print('${user.email} is signed in!');
       Toast.show("Signed in!", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) {
-        return HomeScreen();
-      }), (_) => false);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
     }
   }
 
