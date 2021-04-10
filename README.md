@@ -1,12 +1,12 @@
 # Divemate
 
-## ECE413 - Software Engineering Spring 2021. 
+## CLEAN UI
 
-### Team: 
-          - Wasiq Nauman
-          - Luis Sosa 🧐
-          - Renzo Pederzoli ✔
-          - Ananya Bhargava ✔
+![Alt text](docs/login.png?raw=true "Login")
+## MINIMALISTIC DESIGN
+![Alt text](docs/menu.png?raw=true "Login")
+## FULLY CUSTOMIZABLE PROFILE
+![Alt text](docs/profile.png?raw=true "Login")
 
 ### How to get started on the project:  
 
