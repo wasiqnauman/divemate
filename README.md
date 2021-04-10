@@ -1,6 +1,15 @@
 # Divemate
 
-## ECE413 - Software Engineering Spring 2021. 
+<!-- ## ECE413 - Software Engineering Spring 2021.  -->
+
+
+## Clean UI Design
+![Alt text](docs/login.png?raw=true "Login")
+## Minimalistic design
+![Alt text](docs/menu.png?raw=true "Login")
+## Fully customizable profile
+![Alt text](docs/profile.png?raw=true "Login")
+
 
 ### Team: 
           - Wasiq Nauman
