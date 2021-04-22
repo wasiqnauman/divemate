@@ -40,6 +40,7 @@ class _UserProfileState extends State<UserProfile> {
     }
     return Material(
       child: Container(
+        //color: const Color(0xffecf0f1),
         child: Container(
           margin: const EdgeInsets.all(30),
           child: Column(

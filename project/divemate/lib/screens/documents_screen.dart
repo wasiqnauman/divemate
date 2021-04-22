@@ -38,7 +38,7 @@ class _DocumentsScreen extends State<DocumentsScreen> {
             if (documents?.isNotEmpty ?? false) {
               // makes sure the data is not null
               return Scaffold(
-                backgroundColor: const Color(0xffecf0f1),
+                //backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDocuments(documents, user, context),
                 floatingActionButton: floatingButton(
                     () => Navigator.pushNamed(context, DocumentForm.id),
