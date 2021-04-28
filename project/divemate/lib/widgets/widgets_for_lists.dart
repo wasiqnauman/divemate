@@ -1,11 +1,12 @@
 import 'package:divemate/database.dart';
+import 'package:divemate/screens/singledive_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 
 Widget floatingButton(Function _fun, String _img) {
-  /*
+  /**
     @params
     _fun: onPressed function of button
     _img: path to image for button text
@@ -62,21 +63,24 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
     itemCount: _arr.length,
     itemBuilder: (BuildContext context, int index) {
       return ListTile(
-        tileColor: Color(0xff7499a1),
+        tileColor: Color(0xff7499a1).withAlpha(110),
+        focusColor: Colors.blue.withAlpha(90),
+        hoverColor: Colors.blue.withAlpha(90),
+        selectedTileColor: Colors.blue.withAlpha(90),
+
         leading: Icon(
           // users image should go here
           Icons.image,
           size: 60,
         ),
-        title: Text(_arr[index].location),
-        subtitle: Text(
-          "COMMENT FROM DIVE HERE ${_arr[index].comment}",
-        ),
+        title: Text(_arr[index].location,),
+        subtitle: Text(_arr[index].comment,),
         trailing: IconButton(
           onPressed: () => deleteTile(index),
           icon: Icon(Icons.delete_forever),
         ),
         isThreeLine: true,
+        onTap: (){Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {'title':'Hello', 'description':'This is a test'});}
       );
     },
     separatorBuilder: (BuildContext context, int index) => Divider(),

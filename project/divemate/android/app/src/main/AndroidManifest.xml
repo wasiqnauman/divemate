@@ -3,6 +3,8 @@
    <application
         android:label="divemate"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+          android:value="AIzaSyA2yRBj6DxW3ujkpoSDKKASBHVv_hW2uj4"/>  
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -38,4 +40,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>

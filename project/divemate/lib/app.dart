@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // Page imports
 import 'package:divemate/screens/signup_screen.dart';
+import 'package:divemate/screens/singledive_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:divemate/theme.dart';
 
@@ -62,6 +63,7 @@ class DivemateApp extends StatelessWidget {
           SignupScreen.id: (context) => SignupScreen(),
           DocumentForm.id: (context) => DocumentForm(),
           HomeScreen.id: (context) => HomeScreen(),
+          SingleDiveScreen.id: (context) => SingleDiveScreen(),
         },
       ),
     );

@@ -15,10 +15,11 @@ class DiveLogsScreen extends StatefulWidget {
 
 class _DiveLogsScreen extends State<DiveLogsScreen> {
   final db = DatabaseService();
-  dynamic testDive = {
+  int numDives = 0;
+  Map<String, dynamic> testDive = {
     'location': 'TEST & CAICOS',
     'img': 'LINK_TO_IMG',
-    'comment': 'AWESOME TEST'
+    'comment': 'Comment here',
   };
 
   @override
@@ -40,7 +41,9 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                 //backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDives(dives, user, context),
                 floatingActionButton: floatingButton(
-                    () => db.addDive(user, testDive), "assets/icons/log.png"),
+                    (){ db.addDive(user, testDive);},
+                    "assets/icons/log.png",
+                ),
               );
             } else {
               return Scaffold(
@@ -51,7 +54,9 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                   ),
                 ),
                 floatingActionButton: floatingButton(
-                    () => db.addDive(user, testDive), "assets/icons/log.png"),
+                    (){ db.addDive(user, testDive);},
+                  "assets/icons/log.png",
+                ),
               );
               //   return Container(
               //     alignment: Alignment(0.0, 0.0),
