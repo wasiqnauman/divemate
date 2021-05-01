@@ -29,11 +29,12 @@ class DatabaseService {
   }
 
   // dives should be added as objects
-  Future<void> addDive(User user, Map<String, dynamic> d) {
+  Future<String> addDive(User user, Map<String, dynamic> d) async{
     final dive = Map<String, dynamic>.from(d);
     CollectionReference divesListRef = _db.collection('users').doc(user.uid).collection('dives-list');
     dive["id"] = dive["id"] ?? divesListRef.doc().id;
-    return divesListRef.doc(dive["id"]).set(dive as dynamic, SetOptions(merge: true));
+    await divesListRef.doc(dive["id"]).set(dive as dynamic, SetOptions(merge: true));
+    return dive["id"];
   }
 
   Future<void> addDocument(User user, dynamic document) {

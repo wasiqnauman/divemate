@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:divemate/screens/divelogs_screen.dart';
 import 'package:divemate/screens/documents_screen.dart';
 import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/screens/login_screen.dart';
 import 'package:divemate/screens/user_profile.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../database.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,12 +17,11 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import '../database.dart';
 import '../widgets/widgets_for_lists.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 // import 'package:search_map_place/search_map_place.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-
 
 class AllFieldsFormBloc extends FormBloc<String, String> {
   final db = DatabaseService();
@@ -86,9 +89,34 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
 
 class SingleDiveScreen extends StatelessWidget {
   static const id = "single_dive_screen";
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+
+
+  openFilePicker(user, dive) async {
+    PickedFile _pi = await ImagePicker().getImage(source: ImageSource.gallery);
+    if(_pi == null){
+      return;
+    }
+    File _image = File(_pi.path); 
+    Reference ref = storage.ref().child("${user.uid}/${dive.id}/pics/0");
+    UploadTask storageUploadTask = ref.putFile(_image);
+    await storageUploadTask.whenComplete(() async{
+      print('Finished uploading pic!');
+      final String url = await ref.getDownloadURL();
+      print("The download URL is $url");
+      db.addDive(user, {"id": dive.id, "img":url});
+    }); 
+  }
+  
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+    final args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final dive = args['dive'];
+    print("Dive is ${dive.id}");
+
+    print("User is ${user.uid}");
     return BlocProvider(
       create: (context) => AllFieldsFormBloc(),
       child: Builder(
@@ -137,6 +165,7 @@ class SingleDiveScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: <Widget>[
+
                         TextFieldBlocBuilder(
                           textFieldBloc: formBloc.divesite,
                           decoration: InputDecoration(
@@ -151,6 +180,11 @@ class SingleDiveScreen extends StatelessWidget {
                             labelText: 'Description',
                             prefixIcon: Icon(Icons.text_fields),
                           ),
+                        ),
+
+                        ElevatedButton(
+                          onPressed: (){openFilePicker(user, dive);},
+                          child: Text("Upload a picture!"),
                         ),
 
                         // DateTimeFieldBlocBuilder(

@@ -80,7 +80,7 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
           icon: Icon(Icons.delete_forever),
         ),
         isThreeLine: true,
-        onTap: (){Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {'title':'Hello', 'description':'This is a test'});}
+        onTap: (){Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {'dive':_arr[index]});},
       );
     },
     separatorBuilder: (BuildContext context, int index) => Divider(),
