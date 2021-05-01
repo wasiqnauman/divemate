@@ -1,10 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:divemate/screens/documents_screen.dart';
+import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SignupScreen extends StatefulWidget {
   static final id = 'signup_screen';
@@ -22,50 +29,72 @@ class _SignupScreenState extends State<SignupScreen> {
   String _email;
   String _password;
   String _name;
+  Image _profilePic = Image.asset('assets/icons/default_pic.jpeg');
+  String _profilePicPath = 'assets/icons/default_pic.jpeg';
+  // bool is_signup = false;
+
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
   _signup() async {
     try {
       _userCredential = await _auth.createUserWithEmailAndPassword(
           email: _email, password: _password);
+
+      Reference ref = storage.ref().child("${_userCredential.user.uid}/profilePic");
+      UploadTask storageUploadTask = ref.putFile(File(_profilePicPath));
+      if(_profilePicPath != 'assets/icons/default_pic.jpeg'){
+        await storageUploadTask.whenComplete(() async{
+          print('Finished uploading pic!');
+          final String url = await ref.getDownloadURL();
+          print("The download URL is $url");
+          _userCredential.user.updateProfile(photoURL: url);
+        });
+      }
+      print('${_userCredential.user.displayName} signed up!');
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+        return HomeScreen();
+      }), (_) => false);
     } catch (e) {
       print(e.message);
       Toast.show(e.message, context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
     }
   }
 
-  _onSuccess(User user) async {
-    // yikes very sketchy
-    await _auth.signOut();
-    await _auth.signInWithEmailAndPassword(email: _email, password: _password);
+  // _onSuccess(User user) async {
+  //   if(is_signup){
+  //     return;
+  //   }
+  //   await _auth.signOut();
+  //   await _auth.signInWithEmailAndPassword(email: _email, password: _password);
+  //   print('${user.displayName} is signed in!');
+  //   Toast.show("Signed in!", context,
+  //       duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+  //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+  //     return DocumentsScreen();
+  //   }), (_) => false);
+  // }
 
-    print('${user.displayName} is signed in!');
-    Toast.show("Signed in!", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-      return DocumentsScreen();
-    }), (_) => false);
-  }
+  // _update(User user) async {
+  //   await user.updateProfile(
+  //     displayName: _name,
+  //   );
+  // }
 
-  _update(User user) async {
-    await user.updateProfile(
-      displayName: _name,
-    );
-  }
+  // void _onAuthChange(User user) {
+  //   if (user == null) {
+  //     print('No user is currently signed in.');
+  //   } else {
+  //     _update(user).then((s) => _onSuccess(user)).catchError((e) => print(e));
+  //   }
+  // }
 
-  void _onAuthChange(User user) {
-    if (user == null) {
-      print('No user is currently signed in.');
-    } else {
-      _update(user).then((s) => _onSuccess(user)).catchError((e) => print(e));
-    }
-  }
-
-  void dispose() {
-    // Clean up controllers when the widget is disposed.
-    _authListener.cancel();
-    super.dispose();
-  }
+  // void dispose() {
+  //   // Clean up controllers when the widget is disposed.
+  //   _authListener.cancel();
+  //   super.dispose();
+  // }
 
   _submit() {
     if (_formkey.currentState.validate()) {
@@ -80,7 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _authListener = _auth.authStateChanges().listen(_onAuthChange);
+    // _authListener = _auth.authStateChanges().listen(_onAuthChange);
 
     return Scaffold(
       body: Center(
@@ -99,6 +128,35 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    // Circle for profile picture
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text("Click below to upload your profile picture!"),
+                    ),
+                    Container(
+                      child: GestureDetector(
+                          onTap: () async{
+                            PickedFile pic = await ImagePicker().getImage(source: ImageSource.gallery);
+                            if(pic != null){
+                              setState(() {
+                                _profilePic = Image.file(File(pic.path));
+                                _profilePicPath = pic.path;
+                              });
+                            }
+                          },
+                          child: CircleAvatar(
+                            radius: 80,
+                            backgroundImage: _profilePic.image,
+                        ),
+                      ),
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: new Border.all(
+                          color: Colors.blue.withAlpha(200),
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
                     // create the name textfield
                     createTextField(
                         'Name',

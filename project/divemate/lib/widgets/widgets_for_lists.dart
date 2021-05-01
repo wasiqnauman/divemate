@@ -62,17 +62,24 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
     padding: const EdgeInsets.all(8),
     itemCount: _arr.length,
     itemBuilder: (BuildContext context, int index) {
+      
+      var previewIcon;
+      print("Imag!");
+      print(_arr[index].img);
+      if(_arr[index].img == null || _arr[index].img == "LINK_TO_IMG"){
+        previewIcon = Icon(Icons.image, size: 60);
+      }
+      else{
+        previewIcon = Image.network(_arr[index].img, width: 60, height: 60,);
+      }
+
       return ListTile(
         tileColor: Color(0xff7499a1).withAlpha(110),
         focusColor: Colors.blue.withAlpha(90),
         hoverColor: Colors.blue.withAlpha(90),
         selectedTileColor: Colors.blue.withAlpha(90),
 
-        leading: Icon(
-          // users image should go here
-          Icons.image,
-          size: 60,
-        ),
+        leading: previewIcon,
         title: Text(_arr[index].location,),
         subtitle: Text(_arr[index].comment,),
         trailing: IconButton(
@@ -104,19 +111,27 @@ Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
+ 
   // TODO: Have to sort _arr when actual dives are logged, so latest dive is on top
   return ListView.separated(
     padding: const EdgeInsets.all(8),
     itemCount: _arr.length,
     itemBuilder: (BuildContext context, int index) {
+
+      var previewIcon;
+      print(_arr[index].img);
+      if(_arr[index].img == null){
+        previewIcon = Icon(Icons.image, size: 60);
+      }
+      else{
+        previewIcon = Image.network(_arr[index].img);
+      }
+      
+
       return ListTile(
         // tileColor: Color(0xffd8b7a9),
         tileColor: Color(0xffbdc3c7),
-        leading: Icon(
-          // document image should go here
-          Icons.image,
-          size: 60,
-        ),
+        leading: previewIcon,
         title: Text(_arr[index].name),
         subtitle: Text(
           "${_arr[index].comment}\nType:",

@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:divemate/screens/login_screen.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class UserProfile extends StatefulWidget {
   @override
@@ -11,6 +16,8 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  String photoURL;
 
   void _logout() async {
     try {
@@ -25,16 +32,22 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
+    photoURL ??= user.photoURL;
     String subUsername = user.email.substring(0, user.email.indexOf('@'));
     String username = user.displayName != null ? user.displayName : subUsername;
+    ImageProvider profilePic;
+    if(photoURL == null){
+      profilePic = AssetImage('assets/icons/default_pic.jpeg');
+    }
+    else{
+      print("PHOTO URL ${user.photoURL}");
+      profilePic = NetworkImage(photoURL);
+    }
+
     if (user == null) {
       return LoginScreen();
     }
@@ -49,11 +62,26 @@ class _UserProfileState extends State<UserProfile> {
               // container containing the user image and details
               Container(
                 margin: EdgeInsets.all(10), // add margin to all sides
-                child: CircleAvatar(
-                  // user image avatar
-                  radius: 80,
-                  backgroundImage: AssetImage('assets/images/lokesh.png'),
-                ),
+                child: GestureDetector(
+                        onTap: () async{
+                          PickedFile pic = await ImagePicker().getImage(source: ImageSource.gallery);
+                          if(pic != null){
+                            Reference ref = storage.ref().child("${user.uid}/profilePic");
+                            UploadTask storageUploadTask = ref.putFile(File(pic.path));
+                            await storageUploadTask.whenComplete(() async{
+                              print("Changed picture!");
+                              final String url = await ref.getDownloadURL();
+                              print("The download URL is $url");
+                              await user.updateProfile(photoURL: url);
+                              setState(() {photoURL = url;});
+                            });
+                          }
+                        },
+                        child: CircleAvatar(
+                        radius: 80,
+                        backgroundImage: profilePic,
+                      ),
+                    ),
               ),
               Text(
                 // name of the user
