@@ -1,3 +1,4 @@
+import 'package:divemate/screens/divelogs_screen.dart';
 import 'package:divemate/screens/document_form.dart';
 import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/screens/login_screen.dart';

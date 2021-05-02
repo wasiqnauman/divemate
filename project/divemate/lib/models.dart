@@ -9,22 +9,28 @@ class Dive {
   String location;
   String img;
   String comment;
+  DateTime startDatetime;
+
   DatabaseService _db = DatabaseService();
 
   Dive(User user){
     this.id = _db.getNewDiveId(user);
   }
-  Dive.fromId(this.id, {this.location, this.img, this.comment});
+  Dive.fromId(this.id, {this.location, this.img, this.comment, this.startDatetime});
 
   factory Dive.fromFireStore(DocumentSnapshot doc) {
     Map data = doc.data();
 
-    return Dive.fromId(
+    Dive d = Dive.fromId(
       doc.id,
       location: data['location'] ?? '',
       img: data['img'] ?? '',
       comment: data['comment'] ?? '',
+      startDatetime: data['startDatetime'].toDate() ?? DateTime.now(),
     );
+
+    print("Got a dive from firebase! ${d.id} from ${d.startDatetime}");
+    return d;
   }
 }
 

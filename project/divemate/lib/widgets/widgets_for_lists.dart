@@ -51,6 +51,9 @@ Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context
     a ListView widget
 
     */
+  
+  print("DIVELIST = ${_divelist.toString()}");
+  _divelist.sort((Dive a, Dive b)=>b.startDatetime.compareTo(a.startDatetime));
 
   deleteTile(int index) { 
     db.removeDive(user, _divelist[index].id);

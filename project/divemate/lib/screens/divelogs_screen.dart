@@ -18,11 +18,11 @@ class DiveLogsScreen extends StatefulWidget {
 class _DiveLogsScreen extends State<DiveLogsScreen> {
   final db = DatabaseService();
   int numDives = 0;
-  Map<String, dynamic> testDive = {
-    'location': 'TEST & CAICOS',
-    'img': 'LINK_TO_IMG',
-    'comment': 'Comment here',
-  };
+  // Map<String, dynamic> testDive = {
+  //   'location': 'TEST & CAICOS',
+  //   'img': 'LINK_TO_IMG',
+  //   'comment': 'Comment here',
+  // };
 
   @override
   Widget build(BuildContext context) {
