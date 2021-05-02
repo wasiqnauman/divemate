@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:divemate/models.dart';
 import 'package:divemate/screens/divelogs_screen.dart';
 import 'package:divemate/screens/documents_screen.dart';
 import 'package:divemate/screens/home_screen.dart';
@@ -83,7 +84,7 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
     final dive = {
       'id': diveid.value,
       'location': divesite.value,
-      'comment': (comment.value=='')? comment.value: 'A fun dive!',
+      'comment': (comment.value=='')? 'A fun dive!' : comment.value,
     };
     
     print("Submitting the form!");
@@ -97,7 +98,7 @@ class SingleDiveScreen extends StatelessWidget {
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
 
-  openFilePicker(user, dive) async {
+  openFilePicker(User user, Dive dive) async {
     PickedFile _pi = await ImagePicker().getImage(source: ImageSource.gallery);
     if(_pi == null){
       return;
@@ -109,7 +110,7 @@ class SingleDiveScreen extends StatelessWidget {
       print('Finished uploading pic!');
       final String url = await ref.getDownloadURL();
       print("The download URL is $url");
-      db.addDive(user, {"id": dive.id, "img":url});
+      db.addDive(user.uid, {"id": dive.id, "img":url});
     }); 
   }
   
@@ -117,9 +118,9 @@ class SingleDiveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    final args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>  ?? {'dive': Map()};
-    Map<String, dynamic> dive = args['dive'];
-    print("Dive is ${dive['id']}");
+    final Map<String, Dive> args = ModalRoute.of(context).settings.arguments ?? { "dive": Dive(user) };
+    Dive dive = args['dive'];
+    print("Dive is ${dive.id}");
 
     print("User is ${user.uid}");
     return BlocProvider(
@@ -129,7 +130,7 @@ class SingleDiveScreen extends StatelessWidget {
 
           final formBloc = BlocProvider.of<AllFieldsFormBloc>(context);
           formBloc.uid.updateValue(user.uid);
-          formBloc.diveid.updateValue(dive['id']);
+          formBloc.diveid.updateValue(dive.id);
 
           return Theme(
             data: Theme.of(context).copyWith(

@@ -1,4 +1,5 @@
 import 'package:divemate/database.dart';
+import 'package:divemate/models.dart';
 import 'package:divemate/screens/singledive_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,36 +42,36 @@ Widget floatingButton(Function _fun, String _img) {
 
 final db = DatabaseService(); // Need this here to remove a dive/document
 
-Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
+Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context) {
   /*
     @params
-    _arr: list of the tiles (dives or docs, etc.)
+    _divelist: list of the tiles (dives or docs, etc.)
 
     @returns
     a ListView widget
 
     */
 
-  deleteTile(int index) {
-    db.removeDive(user, _arr[index].id);
+  deleteTile(int index) { 
+    db.removeDive(user, _divelist[index].id);
     Toast.show("Successfully Deleted", context,
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
-  // TODO: Have to sort _arr when actual dives are logged, so latest dive is on top
+  // TODO: Have to sort _divelist when actual dives are logged, so latest dive is on top
   return ListView.separated(
     padding: const EdgeInsets.all(8),
-    itemCount: _arr.length,
+    itemCount: _divelist.length,
     itemBuilder: (BuildContext context, int index) {
       
       var previewIcon;
       print("Imag!");
-      print(_arr[index].img);
-      if(_arr[index]?.img == null || _arr[index]?.img == "" || _arr[index]?.img == "LINK_TO_IMG"){
+      print(_divelist[index].img);
+      if(_divelist[index]?.img == null || _divelist[index]?.img == "" || _divelist[index]?.img == "LINK_TO_IMG"){
         previewIcon = Icon(Icons.image, size: 60);
       }
       else{
-        previewIcon = Image.network(_arr[index].img, width: 60, height: 60,);
+        previewIcon = Image.network(_divelist[index].img, width: 60, height: 60,);
       }
 
       return ListTile(
@@ -80,14 +81,14 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
         selectedTileColor: Colors.blue.withAlpha(90),
 
         leading: previewIcon,
-        title: Text(_arr[index].location,),
-        subtitle: Text(_arr[index].comment,),
+        title: Text(_divelist[index].location,),
+        subtitle: Text(_divelist[index].comment,),
         trailing: IconButton(
           onPressed: () => deleteTile(index),
           icon: Icon(Icons.delete_forever),
         ),
         isThreeLine: true,
-        onTap: (){Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {'dive':_arr[index]});},
+        onTap: (){Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {'dive':_divelist[index]});},
       );
     },
     separatorBuilder: (BuildContext context, int index) => Divider(),
@@ -95,10 +96,10 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
 }
 
 // IMPORTANT: Need a second Listview for documents since they have different properties
-Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
+Widget customListViewDocuments(dynamic _doclist, User user, BuildContext context) {
   /*
     @params
-    _arr: list of the tiles (dives or docs, etc.)
+    _doclist: list of the tiles (dives or docs, etc.)
 
     @returns
     a ListView widget
@@ -106,25 +107,25 @@ Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
     */
 
   deleteTile(int index) {
-    db.removeDocument(user, _arr[index].id);
+    db.removeDocument(user, _doclist[index].id);
     Toast.show("Document Deleted", context,
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
  
-  // TODO: Have to sort _arr when actual dives are logged, so latest dive is on top
+  // TODO: Have to sort _doclist when actual dives are logged, so latest dive is on top
   return ListView.separated(
     padding: const EdgeInsets.all(8),
-    itemCount: _arr.length,
+    itemCount: _doclist.length,
     itemBuilder: (BuildContext context, int index) {
 
       var previewIcon;
-      print(_arr[index].img);
-      if(_arr[index].img == null){
+      print(_doclist[index].img);
+      if(_doclist[index].img == null){
         previewIcon = Icon(Icons.image, size: 60);
       }
       else{
-        previewIcon = Image.network(_arr[index].img);
+        previewIcon = Image.network(_doclist[index].img);
       }
       
 
@@ -132,9 +133,9 @@ Widget customListViewDocuments(dynamic _arr, User user, BuildContext context) {
         // tileColor: Color(0xffd8b7a9),
         tileColor: Color(0xffbdc3c7),
         leading: previewIcon,
-        title: Text(_arr[index].name),
+        title: Text(_doclist[index].name),
         subtitle: Text(
-          "${_arr[index].comment}\nType:",
+          "${_doclist[index].comment}\nType:",
         ),
         trailing: IconButton(
           onPressed: () => deleteTile(index),

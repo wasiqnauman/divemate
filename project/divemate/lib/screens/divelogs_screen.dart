@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:divemate/screens/login_screen.dart';
-import '../database.dart';
-import '../models.dart';
-import '../widgets/widgets_for_lists.dart';
+import 'package:divemate/database.dart';
+import 'package:divemate/models.dart';
+import 'package:divemate/widgets/widgets_for_lists.dart';
 
 class DiveLogsScreen extends StatefulWidget {
   static final String id = 'divelogs_screen';
@@ -44,7 +44,7 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                 body: customListViewDives(dives, user, context),
                 floatingActionButton: floatingButton(
                     (){ //db.addDive(user, testDive);
-                      Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {"dive": {'id': db.getNewDiveId(user)}});
+                      Navigator.pushNamed(context, SingleDiveScreen.id);
                     },
                     "assets/icons/log.png",
                 ),
@@ -59,8 +59,7 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                 ),
                 floatingActionButton: floatingButton(
                     (){ //db.addDive(user, testDive);
-                      Navigator.pushNamed(context, SingleDiveScreen.id, arguments: 
-                        {"dive": {'id': db.getNewDiveId(user)}});
+                      Navigator.pushNamed(context, SingleDiveScreen.id);
                     },
                   "assets/icons/log.png",
                 ),

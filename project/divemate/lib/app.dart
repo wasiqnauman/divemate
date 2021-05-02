@@ -56,7 +56,7 @@ class DivemateApp extends StatelessWidget {
         title: 'Divemate',
         theme: appTheme(),
         debugShowCheckedModeBanner: false,
-        home: DocumentForm(),
+        home: LoginScreen(),
         // home: LoginScreen(),
         routes: {
           LoginScreen.id: (context) => LoginScreen(),
