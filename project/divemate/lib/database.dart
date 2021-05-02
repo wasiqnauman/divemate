@@ -28,11 +28,19 @@ class DatabaseService {
         list.docs.map((doc) => Document.fromFireStore(doc)).toList());
   }
 
+  String getNewDiveId(User user){
+    return _db.collection('users').doc(user.uid).collection('dives-list').doc().id;
+  }
+
+  String getNewDocumentId(User user){
+    return _db.collection('users').doc(user.uid).collection('documents-list').doc().id;
+  }
+
   // dives should be added as objects
-  Future<String> addDive(User user, Map<String, dynamic> d) async{
+  Future<String> addDive(String uid, Map<String, dynamic> d) async{
     final dive = Map<String, dynamic>.from(d);
-    CollectionReference divesListRef = _db.collection('users').doc(user.uid).collection('dives-list');
-    dive["id"] = dive["id"] ?? divesListRef.doc().id;
+    CollectionReference divesListRef = _db.collection('users').doc(uid).collection('dives-list');
+    dive["id"] = dive["id"]; //?? divesListRef.doc().id;
     await divesListRef.doc(dive["id"]).set(dive as dynamic, SetOptions(merge: true));
     return dive["id"];
   }

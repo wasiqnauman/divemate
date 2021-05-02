@@ -55,9 +55,9 @@ class _SignupScreenState extends State<SignupScreen> {
         return HomeScreen();
       }), (_) => false);
     } catch (e) {
-      print(e.message);
-      Toast.show(e.message, context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      //print(e.message);
+      //Toast.show(e.message, context,
+      //    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
 
     }
   }
@@ -112,18 +112,19 @@ class _SignupScreenState extends State<SignupScreen> {
     // _authListener = _auth.authStateChanges().listen(_onAuthChange);
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Divemate',
-              style: TextStyle(fontFamily: 'Billabong', fontSize: 50.0),
-            ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Divemate',
+                style: TextStyle(fontFamily: 'Billabong', fontSize: 50.0),
+              ),
 
-            // create the user login/ signup form
-            Form(
+              // create the user login/ signup form
+              Form(
                 key: _formkey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -192,8 +193,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     createButton('Back to login', () => Navigator.pop(context)),
                   ],
-                ))
-          ],
+                )
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -26,8 +26,10 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 class AllFieldsFormBloc extends FormBloc<String, String> {
   final db = DatabaseService();
 
-  final divesite = TextFieldBloc();
-  final description = TextFieldBloc();
+  final divesite = TextFieldBloc(
+    validators: [FieldBlocValidators.required],
+  );
+  final comment = TextFieldBloc();
   
   final boolean1 = BooleanFieldBloc();
 
@@ -54,10 +56,16 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
 
   final time1 = InputFieldBloc<TimeOfDay, Object>();
 
+  final uid = TextFieldBloc();
+  final diveid = TextFieldBloc();
+
   AllFieldsFormBloc() {
     addFieldBlocs(fieldBlocs: [
+      uid,
+      diveid,
+
       divesite,
-      description,
+      comment,
       boolean1,
       boolean2,
       select1,
@@ -70,20 +78,17 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
   }
 
   @override
-  void onSubmitting() async {
-    try {
-      await Future<void>.delayed(Duration(milliseconds: 500));
+  void onSubmitting() async{
 
-      emitSuccess(canSubmitAgain: true);
-    } catch (e) {
-      emitFailure();
-    }
-  }
-
-  @override
-  void submit(){
+    final dive = {
+      'id': diveid.value,
+      'location': divesite.value,
+      'comment': (comment.value=='')? comment.value: 'A fun dive!',
+    };
+    
     print("Submitting the form!");
-    //db.addDive(user, testDive);
+    await db.addDive(uid.value, dive);
+    emitSuccess();
   }
 }
 
@@ -112,16 +117,19 @@ class SingleDiveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    final args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final dive = args['dive'];
-    print("Dive is ${dive.id}");
+    final args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>  ?? {'dive': Map()};
+    Map<String, dynamic> dive = args['dive'];
+    print("Dive is ${dive['id']}");
 
     print("User is ${user.uid}");
     return BlocProvider(
       create: (context) => AllFieldsFormBloc(),
       child: Builder(
         builder: (context) {
+
           final formBloc = BlocProvider.of<AllFieldsFormBloc>(context);
+          formBloc.uid.updateValue(user.uid);
+          formBloc.diveid.updateValue(dive['id']);
 
           return Theme(
             data: Theme.of(context).copyWith(
@@ -141,7 +149,9 @@ class SingleDiveScreen extends StatelessWidget {
               centerTitle: true,
               ),
               floatingActionButton: floatingButton(
-                    () => formBloc.submit(), "assets/icons/log.png"),
+                    (){
+                      formBloc.submit();
+                    }, "assets/icons/pencil.png"),
 
               body: FormBlocListener<AllFieldsFormBloc, String, String>(
                 onSubmitting: (context, state) {
@@ -149,9 +159,9 @@ class SingleDiveScreen extends StatelessWidget {
                 },
                 onSuccess: (context, state) {
                   LoadingDialog.hide(context);
-
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => SuccessScreen()));
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(content: Text("Success!")));
+                  Navigator.of(context).popAndPushNamed(DiveLogsScreen.id);
                 },
                 onFailure: (context, state) {
                   LoadingDialog.hide(context);
@@ -175,9 +185,9 @@ class SingleDiveScreen extends StatelessWidget {
                         ),
 
                         TextFieldBlocBuilder(
-                          textFieldBloc: formBloc.description,
+                          textFieldBloc: formBloc.comment,
                           decoration: InputDecoration(
-                            labelText: 'Description',
+                            labelText: 'comment',
                             prefixIcon: Icon(Icons.text_fields),
                           ),
                         ),
@@ -425,10 +435,10 @@ class SuccessScreen extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
 //     Map args = ModalRoute.of(context).settings.arguments as Map;
-//     args ??= {'title':'Title', 'description': 'Description'};
+//     args ??= {'title':'Title', 'comment': 'comment'};
     
 //     final title = args['title'];
-//     final description = args['description'];
+//     final comment = args['comment'];
 
 //     final CameraPosition _kGooglePlex = CameraPosition(
 //       target: currentPosition,
@@ -449,7 +459,7 @@ class SuccessScreen extends StatelessWidget {
 //           child: Column(
 //             children: [
 //               TextFieldBloc(),
-//               Text(description),
+//               Text(comment),
 //               Text("Gear"),
 //               Text("Buddy"),
 //               Text("Dive No."),

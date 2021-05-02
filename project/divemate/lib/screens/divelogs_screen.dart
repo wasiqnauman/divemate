@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divemate/screens/singledive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +43,9 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                 //backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDives(dives, user, context),
                 floatingActionButton: floatingButton(
-                    (){ db.addDive(user, testDive);},
+                    (){ //db.addDive(user, testDive);
+                      Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {"dive": {'id': db.getNewDiveId(user)}});
+                    },
                     "assets/icons/log.png",
                 ),
               );
@@ -54,7 +58,10 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                   ),
                 ),
                 floatingActionButton: floatingButton(
-                    (){ db.addDive(user, testDive);},
+                    (){ //db.addDive(user, testDive);
+                      Navigator.pushNamed(context, SingleDiveScreen.id, arguments: 
+                        {"dive": {'id': db.getNewDiveId(user)}});
+                    },
                   "assets/icons/log.png",
                 ),
               );

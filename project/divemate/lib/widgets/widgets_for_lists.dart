@@ -66,7 +66,7 @@ Widget customListViewDives(dynamic _arr, User user, BuildContext context) {
       var previewIcon;
       print("Imag!");
       print(_arr[index].img);
-      if(_arr[index].img == null || _arr[index].img == "LINK_TO_IMG"){
+      if(_arr[index]?.img == null || _arr[index]?.img == "" || _arr[index]?.img == "LINK_TO_IMG"){
         previewIcon = Icon(Icons.image, size: 60);
       }
       else{
