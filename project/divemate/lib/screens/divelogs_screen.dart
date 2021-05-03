@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divemate/screens/singledive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:divemate/screens/login_screen.dart';
-import '../database.dart';
-import '../models.dart';
-import '../widgets/widgets_for_lists.dart';
+import 'package:divemate/database.dart';
+import 'package:divemate/models.dart';
+import 'package:divemate/widgets/widgets_for_lists.dart';
 
 class DiveLogsScreen extends StatefulWidget {
   static final String id = 'divelogs_screen';
@@ -15,11 +17,12 @@ class DiveLogsScreen extends StatefulWidget {
 
 class _DiveLogsScreen extends State<DiveLogsScreen> {
   final db = DatabaseService();
-  dynamic testDive = {
-    'location': 'TEST & CAICOS',
-    'img': 'LINK_TO_IMG',
-    'comment': 'AWESOME TEST'
-  };
+  int numDives = 0;
+  // Map<String, dynamic> testDive = {
+  //   'location': 'TEST & CAICOS',
+  //   'img': 'LINK_TO_IMG',
+  //   'comment': 'Comment here',
+  // };
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,11 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                 //backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDives(dives, user, context),
                 floatingActionButton: floatingButton(
-                    () => db.addDive(user, testDive), "assets/icons/log.png"),
+                    (){ //db.addDive(user, testDive);
+                      Navigator.pushNamed(context, SingleDiveScreen.id);
+                    },
+                    "assets/icons/log.png",
+                ),
               );
             } else {
               return Scaffold(
@@ -51,7 +58,11 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                   ),
                 ),
                 floatingActionButton: floatingButton(
-                    () => db.addDive(user, testDive), "assets/icons/log.png"),
+                    (){ //db.addDive(user, testDive);
+                      Navigator.pushNamed(context, SingleDiveScreen.id);
+                    },
+                  "assets/icons/log.png",
+                ),
               );
               //   return Container(
               //     alignment: Alignment(0.0, 0.0),

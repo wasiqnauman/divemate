@@ -1,3 +1,4 @@
+import 'package:divemate/screens/divelogs_screen.dart';
 import 'package:divemate/screens/document_form.dart';
 import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/screens/login_screen.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // Page imports
 import 'package:divemate/screens/signup_screen.dart';
+import 'package:divemate/screens/singledive_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:divemate/theme.dart';
 
@@ -55,13 +57,14 @@ class DivemateApp extends StatelessWidget {
         title: 'Divemate',
         theme: appTheme(),
         debugShowCheckedModeBanner: false,
-        home: DocumentForm(),
+        home: LoginScreen(),
         // home: LoginScreen(),
         routes: {
           LoginScreen.id: (context) => LoginScreen(),
           SignupScreen.id: (context) => SignupScreen(),
           DocumentForm.id: (context) => DocumentForm(),
           HomeScreen.id: (context) => HomeScreen(),
+          SingleDiveScreen.id: (context) => SingleDiveScreen(),
         },
       ),
     );
