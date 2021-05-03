@@ -30,21 +30,31 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
   final divesite = TextFieldBloc(
     validators: [FieldBlocValidators.required],
   );
+
   final comment = TextFieldBloc();
+  final buddy = TextFieldBloc();
   
   final boolean1 = BooleanFieldBloc();
 
   final boolean2 = BooleanFieldBloc();
 
-  final select1 = SelectFieldBloc(
+
+  final purpose = SelectFieldBloc(
     items: ['Recreational', 'Certification', 'Professional'],
   );
+  final certificationLevel = SelectFieldBloc(
+    items: ['Open Water', 'Advanced Open Water', 'Rescue', 'Instructor'],
+  );
+  final certificationCompany = SelectFieldBloc(
+    items: ['PADI', 'NAUI', 'SSI', 'CMAS']
+  );
+
 
   final select2 = SelectFieldBloc(
     items: ['Option 1', 'Option 2'],
   );
 
-  final multiSelect1 = MultiSelectFieldBloc<String, dynamic>(
+  final multipurpose = MultiSelectFieldBloc<String, dynamic>(
     items: [
       'Option 1',
       'Option 2',
@@ -70,19 +80,30 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
 
       // Required Fields
       divesite,
+      buddy,
       comment,
       startDatetime,
 
       // Optional Fields
       boolean1,
       boolean2,
-      select1,
+      purpose,
       select2,
-      multiSelect1,
+      multipurpose,
       date1,
       
       time1,
     ]);
+
+    purpose.onValueChanges(onData: (previous, current) async* {
+      if(current.value == "Certification"){
+        addFieldBlocs(fieldBlocs: [certificationLevel, certificationCompany]);
+      }
+      else{
+        removeFieldBlocs(fieldBlocs: [certificationLevel, certificationCompany]);
+      }
+    });
+
   }
 
   @override
@@ -94,6 +115,10 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
       'location': divesite.value,
       'comment': (comment.value == '' || comment.value == null)? 'A fun dive!' : comment.value,
       'startDatetime': startDatetime.value,
+      'buddy': buddy.value,
+      'purpose': purpose.value,
+      'certificationLevel': certificationLevel.value,
+      'certificationCompany': certificationCompany.value,
     };
     
     print("Submitting the form!");
@@ -145,6 +170,13 @@ class SingleDiveScreen extends StatelessWidget {
           formBloc.comment.updateValue(dive.comment);
           formBloc.divesite.updateValue(dive.location);
           formBloc.startDatetime.updateValue(dive.startDatetime);
+          formBloc.buddy.updateValue(dive.buddy);
+          formBloc.purpose.updateValue(dive.purpose);
+          formBloc.certificationCompany.updateValue(dive.certificationCompany);
+          formBloc.certificationLevel.updateValue(dive.certificationLevel);
+          if(dive.purpose == "Certification"){
+            formBloc.addFieldBlocs(fieldBlocs: [formBloc.certificationCompany, formBloc.certificationLevel]);
+          }
 
           return Theme(
             data: Theme.of(context).copyWith(
@@ -197,22 +229,18 @@ class SingleDiveScreen extends StatelessWidget {
                           textFieldBloc: formBloc.divesite,
                           decoration: InputDecoration(
                             labelText: 'Divesite',
-                            prefixIcon: Icon(Icons.text_fields),
+                            prefixIcon: Icon(Icons.location_pin),
                           ),
                         ),
 
                         TextFieldBlocBuilder(
-                          textFieldBloc: formBloc.comment,
+                          textFieldBloc: formBloc.buddy,
                           decoration: InputDecoration(
-                            labelText: 'Comment',
-                            prefixIcon: Icon(Icons.text_fields),
+                            labelText: 'Buddy',
+                            prefixIcon: Icon(Icons.face_rounded),
                           ),
                         ),
 
-                        ElevatedButton(
-                          onPressed: (){openFilePicker(user, dive);},
-                          child: Text("Upload a picture!"),
-                        ),
 
                         // DateTimeFieldBlocBuilder(
                         //   dateTimeFieldBloc: formBloc.date1,
@@ -242,7 +270,7 @@ class SingleDiveScreen extends StatelessWidget {
                         ),
 
                         DropdownFieldBlocBuilder<String>(
-                          selectFieldBloc: formBloc.select1,
+                          selectFieldBloc: formBloc.purpose,
                           decoration: InputDecoration(
                             labelText: 'What are you diving for?',
                             prefixIcon: Icon(Icons.sentiment_very_satisfied),
@@ -250,49 +278,85 @@ class SingleDiveScreen extends StatelessWidget {
                           itemBuilder: (context, value) => value,
                         ),
 
-                        RadioButtonGroupFieldBlocBuilder<String>(
-                          selectFieldBloc: formBloc.select2,
+                        DropdownFieldBlocBuilder<String>(
+                          selectFieldBloc: formBloc.certificationCompany,
                           decoration: InputDecoration(
-                            labelText: 'RadioButtonGroupFieldBlocBuilder',
-                            prefixIcon: SizedBox(),
+                            labelText: 'Certification company',
+                            prefixIcon: Icon(Icons.sentiment_very_satisfied),
                           ),
-                          itemBuilder: (context, item) => item,
+                          itemBuilder: (context, value) => value,
                         ),
 
-                        CheckboxGroupFieldBlocBuilder<String>(
-                          multiSelectFieldBloc: formBloc.multiSelect1,
-                          itemBuilder: (context, item) => item,
+                        DropdownFieldBlocBuilder<String>(
+                          selectFieldBloc: formBloc.certificationLevel,
                           decoration: InputDecoration(
-                            labelText: 'CheckboxGroupFieldBlocBuilder',
-                            prefixIcon: SizedBox(),
+                            labelText: 'Certification level',
+                            prefixIcon: Icon(Icons.sentiment_very_satisfied),
                           ),
+                          itemBuilder: (context, value) => value,
+                        ),
+
+
+                        // RadioButtonGroupFieldBlocBuilder<String>(
+                        //   selectFieldBloc: formBloc.select2,
+                        //   decoration: InputDecoration(
+                        //     labelText: 'RadioButtonGroupFieldBlocBuilder',
+                        //     prefixIcon: SizedBox(),
+                        //   ),
+                        //   itemBuilder: (context, item) => item,
+                        // ),
+
+                        // CheckboxGroupFieldBlocBuilder<String>(
+                        //   multiSelectFieldBloc: formBloc.multipurpose,
+                        //   itemBuilder: (context, item) => item,
+                        //   decoration: InputDecoration(
+                        //     labelText: 'CheckboxGroupFieldBlocBuilder',
+                        //     prefixIcon: SizedBox(),
+                        //   ),
+                        // ),
+
+                        TextFieldBlocBuilder(
+                          textFieldBloc: formBloc.comment,
+                          maxLines: 6,
+                          minLines: 1,
+                          decoration: InputDecoration(
+                            labelText: 'Comment',
+                            prefixIcon: Icon(Icons.comment),
+                          ),
+                        ),
+
+                        ElevatedButton(
+                          onPressed: (){openFilePicker(user, dive);},
+                          child: Text("Upload a picture!"),
                         ),
 
                         
 
-                        TimeFieldBlocBuilder(
-                          timeFieldBloc: formBloc.time1,
-                          format: DateFormat('hh:mm a'),
-                          initialTime: TimeOfDay.now(),
-                          decoration: InputDecoration(
-                            labelText: 'TimeFieldBlocBuilder',
-                            prefixIcon: Icon(Icons.access_time),
-                          ),
-                        ),
-                        SwitchFieldBlocBuilder(
-                          booleanFieldBloc: formBloc.boolean2,
-                          body: Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text('CheckboxFieldBlocBuilder'),
-                          ),
-                        ),
-                        CheckboxFieldBlocBuilder(
-                          booleanFieldBloc: formBloc.boolean1,
-                          body: Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text('CheckboxFieldBlocBuilder'),
-                          ),
-                        ),
+                        // TimeFieldBlocBuilder(
+                        //   timeFieldBloc: formBloc.time1,
+                        //   format: DateFormat('hh:mm a'),
+                        //   initialTime: TimeOfDay.now(),
+                        //   decoration: InputDecoration(
+                        //     labelText: 'TimeFieldBlocBuilder',
+                        //     prefixIcon: Icon(Icons.access_time),
+                        //   ),
+                        // ),
+                        // 
+                        // SwitchFieldBlocBuilder(
+                        //   booleanFieldBloc: formBloc.boolean2,
+                        //   body: Container(
+                        //     alignment: Alignment.centerLeft,
+                        //     child: Text('CheckboxFieldBlocBuilder'),
+                        //   ),
+                        // ),
+                        // 
+                        // CheckboxFieldBlocBuilder(
+                        //   booleanFieldBloc: formBloc.boolean1,
+                        //   body: Container(
+                        //     alignment: Alignment.centerLeft,
+                        //     child: Text('CheckboxFieldBlocBuilder'),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
