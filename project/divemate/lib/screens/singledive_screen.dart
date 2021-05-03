@@ -163,10 +163,12 @@ class SingleDiveScreen extends StatelessWidget {
               ),
               centerTitle: true,
               ),
-              floatingActionButton: floatingButton(
-                    (){
-                      formBloc.submit();
-                    }, "assets/icons/pencil.png"),
+              floatingActionButton: floatingTextButton(formBloc.submit, "Submit"),
+              
+              // floatingButton(
+              //       (){
+              //         formBloc.submit();
+              //       }, "assets/icons/pencil.png"),
 
               body: FormBlocListener<AllFieldsFormBloc, String, String>(
                 onSubmitting: (context, state) {

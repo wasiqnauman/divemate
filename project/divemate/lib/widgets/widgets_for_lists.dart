@@ -7,6 +7,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 
 const months = ["?", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const buttonColor = Color(0xffa9cfd8);
+
+Widget floatingTextButton(Function _fun, String _text) {
+  /**
+    @params
+    _fun: onPressed function of button
+    _img: button text
+
+    @returns
+    a FloatingActionButton widget
+
+    */
+
+  return FloatingActionButton.extended(
+    backgroundColor: buttonColor,
+    foregroundColor: Colors.black,
+    onPressed: _fun,
+    label: Text(_text),
+  );
+}
+
 
 Widget floatingButton(Function _fun, String _img) {
   /**
@@ -20,7 +41,7 @@ Widget floatingButton(Function _fun, String _img) {
     */
 
   return FloatingActionButton.extended(
-    backgroundColor: const Color(0xffa9cfd8),
+    backgroundColor: buttonColor,
     foregroundColor: Colors.black,
     onPressed: _fun,
     label: RichText(
