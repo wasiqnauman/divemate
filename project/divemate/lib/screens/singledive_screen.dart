@@ -92,7 +92,7 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
     final dive = {
       'id': diveid.value,
       'location': divesite.value,
-      'comment': (comment.value=='')? 'A fun dive!' : comment.value,
+      'comment': (comment.value == '' || comment.value == null)? 'A fun dive!' : comment.value,
       'startDatetime': startDatetime.value,
     };
     
@@ -228,7 +228,7 @@ class SingleDiveScreen extends StatelessWidget {
                         DateTimeFieldBlocBuilder(
                           dateTimeFieldBloc: formBloc.startDatetime,
                           canSelectTime: true,
-                          format: DateFormat('EEE mm/dd/yy --- h:mma'),
+                          format: DateFormat('EEE MMMM dd, yyyy @ h:mma'),
                           initialDate: DateTime.now(),
                           firstDate: DateTime(1900),
                           lastDate: DateTime(2100),

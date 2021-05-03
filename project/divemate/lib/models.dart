@@ -26,7 +26,7 @@ class Dive {
       location: data['location'] ?? '',
       img: data['img'] ?? '',
       comment: data['comment'] ?? '',
-      startDatetime: data['startDatetime'].toDate() ?? DateTime.now(),
+      startDatetime: data['startDatetime'].toDate(),
     );
 
     print("Got a dive from firebase! ${d.id} from ${d.startDatetime}");

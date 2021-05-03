@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toast/toast.dart';
 
+const months = ["?", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 Widget floatingButton(Function _fun, String _img) {
   /**
     @params
@@ -42,6 +44,7 @@ Widget floatingButton(Function _fun, String _img) {
 
 final db = DatabaseService(); // Need this here to remove a dive/document
 
+
 Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context) {
   /*
     @params
@@ -53,7 +56,7 @@ Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context
     */
   
   print("DIVELIST = ${_divelist.toString()}");
-  _divelist.sort((Dive a, Dive b)=>b.startDatetime.compareTo(a.startDatetime));
+  _divelist.sort((Dive a, Dive b)=>a.startDatetime.compareTo(b.startDatetime));
 
   deleteTile(int index) { 
     db.removeDive(user, _divelist[index].id);
@@ -61,12 +64,20 @@ Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
-  // TODO: Have to sort _divelist when actual dives are logged, so latest dive is on top
+  bool isSameDate(int i){
+    if(i==0){return true;}
+    DateTime a = _divelist[i].startDatetime;
+    DateTime b = _divelist[i-1].startDatetime;
+    return (a.year == b.year) && (a.month == b.month) && (a.day == b.day);
+  }
+
+  final separatorFont = TextStyle(fontWeight: FontWeight.bold, color: Colors.blue.shade900.withAlpha(190));
+
   return ListView.separated(
     padding: const EdgeInsets.all(8),
     itemCount: _divelist.length,
     itemBuilder: (BuildContext context, int index) {
-      
+
       var previewIcon;
       print("Imag!");
       print(_divelist[index].img);
@@ -77,7 +88,9 @@ Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context
         previewIcon = Image.network(_divelist[index].img, width: 60, height: 60,);
       }
 
-      return ListTile(
+      
+
+      var listTile = ListTile(
         tileColor: Color(0xff7499a1).withAlpha(110),
         focusColor: Colors.blue.withAlpha(90),
         hoverColor: Colors.blue.withAlpha(90),
@@ -93,8 +106,37 @@ Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context
         isThreeLine: true,
         onTap: (){Navigator.pushNamed(context, SingleDiveScreen.id, arguments: {'dive':_divelist[index]});},
       );
+      
+      if(index == 0){
+        var seprator = Column(
+          children: [
+            Text(months[_divelist[index].startDatetime.month] + " " + _divelist[index].startDatetime.day.toString() + ", " + _divelist[index].startDatetime.year.toString(),
+              style: separatorFont,
+            ),
+            listTile,
+          ],
+        );
+        return seprator;
+      }
+      else{
+        return listTile;
+      }
     },
-    separatorBuilder: (BuildContext context, int index) => Divider(),
+    separatorBuilder: (BuildContext context, int index){
+      if(!isSameDate(index+1)){
+        return Column(
+          children: [
+            Divider(),
+            Text(months[_divelist[index+1].startDatetime.month] + " " + _divelist[index+1].startDatetime.day.toString() + ", " + _divelist[index+1].startDatetime.year.toString(),
+              style: separatorFont,
+            ),
+          ],
+        ); //Divider(),
+      }
+      else{
+        return Padding(padding: EdgeInsets.all(2),);
+      }
+    }
   );
 }
 
@@ -115,8 +157,6 @@ Widget customListViewDocuments(dynamic _doclist, User user, BuildContext context
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
- 
-  // TODO: Have to sort _doclist when actual dives are logged, so latest dive is on top
   return ListView.separated(
     padding: const EdgeInsets.all(8),
     itemCount: _doclist.length,
