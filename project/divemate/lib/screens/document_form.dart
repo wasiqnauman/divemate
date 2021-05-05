@@ -53,17 +53,17 @@ class _DocumentFormState extends State<DocumentForm> {
       return LoginScreen();
     }
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(35.0),
-          child: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            backgroundColor: Colors.white,
-            elevation: 0.0,
-          )
-      ),
+      // appBar: PreferredSize(
+      //     preferredSize: Size.fromHeight(35.0),
+      //     child: AppBar(
+      //       leading: IconButton(
+      //         icon: Icon(Icons.arrow_back, color: Colors.black),
+      //         onPressed: () => Navigator.of(context).pop(),
+      //       ),
+      //       backgroundColor: Colors.white,
+      //       elevation: 0.0,
+      //     )
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

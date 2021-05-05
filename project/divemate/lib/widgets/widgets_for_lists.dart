@@ -183,14 +183,14 @@ Widget customListViewDocuments(dynamic _doclist, User user, BuildContext context
     itemCount: _doclist.length,
     itemBuilder: (BuildContext context, int index) {
 
-      var previewIcon;
-      print(_doclist[index].img);
-      if(_doclist[index].img == null){
-        previewIcon = Icon(Icons.image, size: 60);
-      }
-      else{
-        previewIcon = Image.network(_doclist[index].img);
-      }
+      var previewIcon = Icon(Icons.image, size: 60, color: Colors.black);
+      // print(_doclist[index].img);
+      // if(_doclist[index].img == null){
+      //   previewIcon = Icon(Icons.image, size: 60);
+      // }
+      // else{
+      //   previewIcon = Image.network(_doclist[index].img);
+      // }
       
 
       return ListTile(

@@ -63,9 +63,6 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   // _onSuccess(User user) async {
-  //   if(is_signup){
-  //     return;
-  //   }
   //   await _auth.signOut();
   //   await _auth.signInWithEmailAndPassword(email: _email, password: _password);
   //   print('${user.displayName} is signed in!');
@@ -109,7 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // _authListener = _auth.authStateChanges().listen(_onAuthChange);
+    // _authListener = _auth.authStateChanges().listen(_onSuccess);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -118,6 +115,7 @@ class _SignupScreenState extends State<SignupScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: 25.0),
               Text(
                 'Divemate',
                 style: TextStyle(fontFamily: 'Billabong', fontSize: 50.0),
