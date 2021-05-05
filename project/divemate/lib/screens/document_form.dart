@@ -2,15 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:divemate/database.dart';
 import 'package:divemate/models.dart';
-import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:divemate/screens/signup_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:toast/toast.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'login_screen.dart';
@@ -23,8 +20,6 @@ class DocumentForm extends StatefulWidget {
 }
 
 class _DocumentFormState extends State<DocumentForm> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  StreamSubscription<void> _authListener;
   final GlobalKey<FormState> _documentKey = new GlobalKey<FormState>();
   String _documentName;
   String _documentNo;
@@ -78,17 +73,6 @@ class _DocumentFormState extends State<DocumentForm> {
             {"document": Document.fresh(user)};
     final Document document = args["document"];
     return Scaffold(
-      // appBar: PreferredSize(
-      //     preferredSize: Size.fromHeight(35.0),
-      //     child: AppBar(
-      //       leading: IconButton(
-      //         icon: Icon(Icons.arrow_back, color: Colors.black),
-      //         onPressed: () => Navigator.of(context).pop(),
-      //       ),
-      //       backgroundColor: Colors.white,
-      //       elevation: 0.0,
-      //     )
-      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -99,8 +83,6 @@ class _DocumentFormState extends State<DocumentForm> {
               style: TextStyle(fontFamily: 'Billabong', fontSize: 50.0),
             ),
 
-            // create the user login/ signup form
-            // create the user login/ signup form
             Form(
                 key: _documentKey,
                 child: Column(
@@ -169,11 +151,6 @@ class _DocumentFormState extends State<DocumentForm> {
             createButton('Upload a picture', () {
               openFilePicker(user, document);
             }),
-
-            // ElevatedButton(
-            //   onPressed: (){openFilePicker(user, document);},
-            //   child: Text("Upload a picture!"),
-            // ),
           ],
         ),
       ),

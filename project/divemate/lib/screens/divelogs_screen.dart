@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divemate/screens/singledive_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,11 +17,6 @@ class DiveLogsScreen extends StatefulWidget {
 class _DiveLogsScreen extends State<DiveLogsScreen> {
   final db = DatabaseService();
   int numDives = 0;
-  // Map<String, dynamic> testDive = {
-  //   'location': 'TEST & CAICOS',
-  //   'img': 'LINK_TO_IMG',
-  //   'comment': 'Comment here',
-  // };
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +37,7 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                 //backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDives(dives, user, context),
                 floatingActionButton: floatingButton(
-                    (){ //db.addDive(user, testDive);
+                    (){
                       Navigator.pushNamed(context, SingleDiveScreen.id);
                     },
                     "assets/icons/log.png",
@@ -58,23 +52,12 @@ class _DiveLogsScreen extends State<DiveLogsScreen> {
                   ),
                 ),
                 floatingActionButton: floatingButton(
-                    (){ //db.addDive(user, testDive);
+                    (){
                       Navigator.pushNamed(context, SingleDiveScreen.id);
                     },
                   "assets/icons/log.png",
                 ),
               );
-              //   return Container(
-              //     alignment: Alignment(0.0, 0.0),
-              //     child: ElevatedButton( //separate this into a widget
-              //       style: ButtonStyle(
-              //         backgroundColor: MaterialStateProperty.all<Color>(Color(0xffa9cfd8)),
-              //         foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-              //       ),
-              //       child: Text("Add Dive"),
-              //       onPressed: () => db.addDive(user, testDive),
-              //     ),
-              //   );
             }
           },
         ),

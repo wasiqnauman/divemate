@@ -1,16 +1,13 @@
 import 'dart:io';
-
 import 'package:divemate/screens/login_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:audioplayers/audio_cache.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -34,15 +31,6 @@ class _UserProfileState extends State<UserProfile> {
       print(e.message);
       Toast.show(e.message, context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-    }
-  }
-
-  _RickRoll() async {
-    const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not rick roll';
     }
   }
 
@@ -170,11 +158,6 @@ class _UserProfileState extends State<UserProfile> {
                           "Logout",
                           style: TextStyle(color: Colors.black),
                         )),
-                    // ProfileButton(Icons.settings, "Settings", null),
-                    // ProfileButton(Icons.history, "Dive History", null),
-                    // ProfileButton(
-                    //     Icons.attach_money, "Give A+ grade", null),
-                    // ProfileButton(Icons.exit_to_app, "Logout", null),
                   ],
                 ),
               ),
@@ -205,21 +188,6 @@ class ProfileButton extends StatelessWidget {
               iconLabel,
               style: TextStyle(fontSize: 18),
             )),
-
-        // *** Use expanded widgets to avoid overflow   ***
-
-        // Expanded(child: Icon(iconType), flex: 1),
-
-        // Expanded(
-        //   flex: 2,
-        //   child: TextButton(
-        //     onPressed: () => print("$iconLabel was pressed!"),
-        //     child: Text(
-        //       iconLabel,
-        //       style: TextStyle(fontSize: 16),
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

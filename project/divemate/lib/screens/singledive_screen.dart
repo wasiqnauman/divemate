@@ -1,11 +1,6 @@
 import 'dart:io';
-
 import 'package:divemate/models.dart';
-import 'package:divemate/screens/divelogs_screen.dart';
-import 'package:divemate/screens/documents_screen.dart';
 import 'package:divemate/screens/home_screen.dart';
-import 'package:divemate/screens/login_screen.dart';
-import 'package:divemate/screens/user_profile.dart';
 import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +9,8 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../database.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'dart:async';
-import '../database.dart';
 import '../widgets/widgets_for_lists.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-// import 'package:search_map_place/search_map_place.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 class AllFieldsFormBloc extends FormBloc<String, String> {
   final db = DatabaseService();
@@ -198,12 +185,6 @@ class SingleDiveScreen extends StatelessWidget {
                 ),
                 floatingActionButton:
                     floatingTextButton(formBloc.submit, "Submit"),
-
-                // floatingButton(
-                //       (){
-                //         formBloc.submit();
-                //       }, "assets/icons/pencil.png"),
-
                 body: FormBlocListener<AllFieldsFormBloc, String, String>(
                   onSubmitting: (context, state) {
                     LoadingDialog.show(context);
@@ -226,11 +207,6 @@ class SingleDiveScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: <Widget>[
-                          // Text(
-                          //   'Add a new dive!',
-                          //   style: TextStyle(
-                          //       fontFamily: 'Billabong', fontSize: 50.0),
-                          // ),
                           TextFieldBlocBuilder(
                             textFieldBloc: formBloc.divesite,
                             decoration: InputDecoration(
@@ -238,7 +214,6 @@ class SingleDiveScreen extends StatelessWidget {
                               prefixIcon: Icon(Icons.location_pin),
                             ),
                           ),
-
                           TextFieldBlocBuilder(
                             textFieldBloc: formBloc.buddy,
                             decoration: InputDecoration(
@@ -246,20 +221,6 @@ class SingleDiveScreen extends StatelessWidget {
                               prefixIcon: Icon(Icons.face_rounded),
                             ),
                           ),
-
-                          // DateTimeFieldBlocBuilder(
-                          //   dateTimeFieldBloc: formBloc.date1,
-                          //   format: DateFormat('dd-mm-yyyy'),
-                          //   initialDate: DateTime.now(),
-                          //   firstDate: DateTime(1900),
-                          //   lastDate: DateTime(2100),
-                          //   decoration: InputDecoration(
-                          //     labelText: 'Date',
-                          //     prefixIcon: Icon(Icons.calendar_today),
-                          //     helperText: 'Date',
-                          //   ),
-                          // ),
-
                           DateTimeFieldBlocBuilder(
                             dateTimeFieldBloc: formBloc.startDatetime,
                             canSelectTime: true,
@@ -273,7 +234,6 @@ class SingleDiveScreen extends StatelessWidget {
                               //helperText: 'Date and Time',
                             ),
                           ),
-
                           DropdownFieldBlocBuilder<String>(
                             selectFieldBloc: formBloc.purpose,
                             decoration: InputDecoration(
@@ -282,7 +242,6 @@ class SingleDiveScreen extends StatelessWidget {
                             ),
                             itemBuilder: (context, value) => value,
                           ),
-
                           DropdownFieldBlocBuilder<String>(
                             selectFieldBloc: formBloc.certificationCompany,
                             decoration: InputDecoration(
@@ -291,7 +250,6 @@ class SingleDiveScreen extends StatelessWidget {
                             ),
                             itemBuilder: (context, value) => value,
                           ),
-
                           DropdownFieldBlocBuilder<String>(
                             selectFieldBloc: formBloc.certificationLevel,
                             decoration: InputDecoration(
@@ -300,25 +258,6 @@ class SingleDiveScreen extends StatelessWidget {
                             ),
                             itemBuilder: (context, value) => value,
                           ),
-
-                          // RadioButtonGroupFieldBlocBuilder<String>(
-                          //   selectFieldBloc: formBloc.select2,
-                          //   decoration: InputDecoration(
-                          //     labelText: 'RadioButtonGroupFieldBlocBuilder',
-                          //     prefixIcon: SizedBox(),
-                          //   ),
-                          //   itemBuilder: (context, item) => item,
-                          // ),
-
-                          // CheckboxGroupFieldBlocBuilder<String>(
-                          //   multiSelectFieldBloc: formBloc.multipurpose,
-                          //   itemBuilder: (context, item) => item,
-                          //   decoration: InputDecoration(
-                          //     labelText: 'CheckboxGroupFieldBlocBuilder',
-                          //     prefixIcon: SizedBox(),
-                          //   ),
-                          // ),
-
                           TextFieldBlocBuilder(
                             textFieldBloc: formBloc.comment,
                             maxLines: 6,
@@ -328,42 +267,9 @@ class SingleDiveScreen extends StatelessWidget {
                               prefixIcon: Icon(Icons.comment),
                             ),
                           ),
-
-                          // ElevatedButton(
-                          //   onPressed: () {
-                          //     openFilePicker(user, dive);
-                          //   },
-                          //   child: Text("Upload a picture!"),
-                          // ),
-
                           createButton('Upload a picture', () {
                             openFilePicker(user, dive);
                           }),
-                          // TimeFieldBlocBuilder(
-                          //   timeFieldBloc: formBloc.time1,
-                          //   format: DateFormat('hh:mm a'),
-                          //   initialTime: TimeOfDay.now(),
-                          //   decoration: InputDecoration(
-                          //     labelText: 'TimeFieldBlocBuilder',
-                          //     prefixIcon: Icon(Icons.access_time),
-                          //   ),
-                          // ),
-                          //
-                          // SwitchFieldBlocBuilder(
-                          //   booleanFieldBloc: formBloc.boolean2,
-                          //   body: Container(
-                          //     alignment: Alignment.centerLeft,
-                          //     child: Text('CheckboxFieldBlocBuilder'),
-                          //   ),
-                          // ),
-                          //
-                          // CheckboxFieldBlocBuilder(
-                          //   booleanFieldBloc: formBloc.boolean1,
-                          //   body: Container(
-                          //     alignment: Alignment.centerLeft,
-                          //     child: Text('CheckboxFieldBlocBuilder'),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -436,130 +342,3 @@ class SuccessScreen extends StatelessWidget {
     );
   }
 }
-
-// class SingleDiveScreen extends StatefulWidget {
-//   static final String id = 'single_dive_screen';
-
-//   @override
-//   _SingleDiveScreenState createState() => _SingleDiveScreenState();
-// }
-
-// class _SingleDiveScreenState extends State<SingleDiveScreen> {
-
-//   LatLng currentPosition = LatLng(0, 0);
-//   Completer<GoogleMapController> _controller = Completer();
-
-//   /// Determine the current position of the device.
-//   ///
-//   /// When the location services are not enabled or permissions
-//   /// are denied the `Future` will return an error.
-//   Future<Position> _determinePosition() async {
-//     bool serviceEnabled;
-//     LocationPermission permission;
-
-//     // Test if location services are enabled.
-//     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-//     print("service enabled $serviceEnabled");
-//     if (!serviceEnabled) {
-//       // Location services are not enabled don't continue
-//       // accessing the position and request users of the
-//       // App to enable the location services.
-//       return Future.error('Location services are disabled.');
-//     }
-
-//     permission = await Geolocator.checkPermission();
-//     print("Permission $permission");
-//     if (permission == LocationPermission.denied) {
-//       permission = await Geolocator.requestPermission();
-//       if (permission == LocationPermission.denied) {
-//         // Permissions are denied, next time you could try
-//         // requesting permissions again (this is also where
-//         // Android's shouldShowRequestPermissionRationale
-//         // returned true. According to Android guidelines
-//         // your App should show an explanatory UI now.
-//         return Future.error('Location permissions are denied');
-//       }
-//     }
-
-//     if (permission == LocationPermission.deniedForever) {
-//       // Permissions are denied forever, handle appropriately.
-//       return Future.error(
-//         'Location permissions are permanently denied, we cannot request permissions.');
-//     }
-
-//     // When we reach here, permissions are granted and we can
-//     // continue accessing the position of the device.
-//     return await Geolocator.getCurrentPosition();
-//   }
-
-//   Future<void> _setCurrentLocation() async{
-//     print("111!!!");
-//     Position p = await _determinePosition();
-//     print("222!!!");
-//     final GoogleMapController controller = await _controller.future;
-//     print("333!!!");
-//     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(p.latitude, p.longitude))));
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     Map args = ModalRoute.of(context).settings.arguments as Map;
-//     args ??= {'title':'Title', 'comment': 'comment'};
-
-//     final title = args['title'];
-//     final comment = args['comment'];
-
-//     final CameraPosition _kGooglePlex = CameraPosition(
-//       target: currentPosition,
-//       zoom: 10,
-//     );
-
-//     return Scaffold(
-//       appBar: AppBar(
-//       backgroundColor: Theme.of(context).canvasColor,
-//       title: Text(
-//         'Divemate',
-//         style: TextStyle(fontFamily: 'Billabong', fontSize: 38.0),
-//       ),
-//       centerTitle: true,
-//       ),
-//       body: SafeArea(
-//         child: Center(
-//           child: Column(
-//             children: [
-//               TextFieldBloc(),
-//               Text(comment),
-//               Text("Gear"),
-//               Text("Buddy"),
-//               Text("Dive No."),
-//               Text("Dive Site"),
-
-//               // SizedBox(
-//               //   height: 200,
-//               //   width: 200,
-//               //   child: GoogleMap(
-//               //     mapType: MapType.normal,
-//               //     initialCameraPosition: _kGooglePlex,
-//               //     zoomControlsEnabled: false,
-//               //     onMapCreated: (GoogleMapController controller) {
-//               //       _controller.complete(controller);
-//               //       _setCurrentLocation();
-//               //     },
-//               //   ),
-//               // ),
-//               // SizedBox(
-//               //   //width: 200,
-//               //   //height: 400,
-//               //   child: SearchMapPlaceWidget(
-//               //     apiKey: "AIzaSyA2yRBj6DxW3ujkpoSDKKASBHVv_hW2uj4",
-//               //     location: null,
-//               //     radius: 10,
-//               //   ),
-//               // ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

@@ -55,16 +55,8 @@ class _DocumentsScreen extends State<DocumentsScreen> {
                 ),
                 floatingActionButton: floatingButton(
                     () => Navigator.pushNamed(context, DocumentForm.id),
-                    // () => db.addDocument(user, testDocument),
                     "assets/icons/documents.png"),
               );
-              // return Container(
-              //   alignment: Alignment(0.0, 0.0),
-              //   child: ElevatedButton(
-              //     child: Text("Add Document"),
-              //     onPressed: () => db.addDocument(user, testDocument),
-              //   ),
-              // );
             }
           },
         ),

@@ -52,23 +52,6 @@ class _HomeScreen extends State<HomeScreen> {
                       Tab(icon: Icon(Icons.account_circle_outlined)),
                     ],
                   ),
-
-                  // // title: Text("Divemate",
-                  // //     style: TextStyle(
-                  // //         fontWeight: FontWeight.bold, fontSize: 23)),
-                  // centerTitle: true,
-                  //   bottom: TabBar(
-                  //     tabs: [
-                  //       Tab(
-                  //           icon:
-                  //               ImageIcon(AssetImage("assets/icons/log.png"))),
-                  //       Tab(
-                  //           icon: ImageIcon(
-                  //               AssetImage("assets/icons/documents.png"))),
-                  //       Tab(icon: Icon(Icons.account_circle_outlined)),
-                  //     ],
-                  //   ),
-                  // ),
                   body: TabBarView(
                     children: [
                       DiveLogsScreen(),
@@ -76,6 +59,9 @@ class _HomeScreen extends State<HomeScreen> {
                       UserProfile(),
                     ],
                   ),
-                ))));
+                )
+            )
+        )
+    );
   }
 }

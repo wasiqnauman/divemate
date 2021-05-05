@@ -75,9 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
               'Divemate',
               style: TextStyle(fontFamily: 'Billabong', fontSize: 50.0),
             ),
-
-            // create the user login/ signup form
-            // create the user login/ signup form
             Form(
                 key: _formkey,
                 child: Column(
