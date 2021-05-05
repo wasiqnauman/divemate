@@ -34,7 +34,7 @@ dependencies:
   google_maps_flutter_web: "^0.1.0"
   geolocator: "^6.2.1"
   image_picker: "^0.6.7"
-  audioplayers: 
+  audioplayers: "^0.16.0"
 
   firebase_storage: "^7.0.0"
   flutter_form_bloc:
