@@ -33,22 +33,19 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
 
   final comment = TextFieldBloc();
   final buddy = TextFieldBloc();
-  
+
   final boolean1 = BooleanFieldBloc();
 
   final boolean2 = BooleanFieldBloc();
 
-
   final purpose = SelectFieldBloc(
-    items: ['Recreational', 'Certification', 'Professional'],
-  );
+      items: ['Recreational', 'Certification', 'Professional'],
+      validators: [FieldBlocValidators.required]);
   final certificationLevel = SelectFieldBloc(
     items: ['Open Water', 'Advanced Open Water', 'Rescue', 'Instructor'],
   );
-  final certificationCompany = SelectFieldBloc(
-    items: ['PADI', 'NAUI', 'SSI', 'CMAS']
-  );
-
+  final certificationCompany =
+      SelectFieldBloc(items: ['PADI', 'NAUI', 'SSI', 'CMAS']);
 
   final select2 = SelectFieldBloc(
     items: ['Option 1', 'Option 2'],
@@ -91,36 +88,36 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
       select2,
       multipurpose,
       date1,
-      
+
       time1,
     ]);
 
     purpose.onValueChanges(onData: (previous, current) async* {
-      if(current.value == "Certification"){
+      if (current.value == "Certification") {
         addFieldBlocs(fieldBlocs: [certificationLevel, certificationCompany]);
-      }
-      else{
-        removeFieldBlocs(fieldBlocs: [certificationLevel, certificationCompany]);
+      } else {
+        removeFieldBlocs(
+            fieldBlocs: [certificationLevel, certificationCompany]);
       }
     });
-
   }
 
   @override
-  void onSubmitting() async{
-
+  void onSubmitting() async {
     // Dive fields must be reflected here as well
     final dive = {
       'id': diveid.value,
       'location': divesite.value,
-      'comment': (comment.value == '' || comment.value == null)? 'A fun dive!' : comment.value,
+      'comment': (comment.value == '' || comment.value == null)
+          ? 'A fun dive!'
+          : comment.value,
       'startDatetime': startDatetime.value,
       'buddy': buddy.value,
       'purpose': purpose.value,
       'certificationLevel': certificationLevel.value,
       'certificationCompany': certificationCompany.value,
     };
-    
+
     print("Submitting the form!");
     await db.addDive(uid.value, dive);
     emitSuccess();
@@ -129,30 +126,30 @@ class AllFieldsFormBloc extends FormBloc<String, String> {
 
 class SingleDiveScreen extends StatelessWidget {
   static const id = "single_dive_screen";
-  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   openFilePicker(User user, Dive dive) async {
     PickedFile _pi = await ImagePicker().getImage(source: ImageSource.gallery);
-    if(_pi == null){
+    if (_pi == null) {
       return;
     }
-    File _image = File(_pi.path); 
+    File _image = File(_pi.path);
     Reference ref = storage.ref().child("${user.uid}/${dive.id}/pics/0");
     UploadTask storageUploadTask = ref.putFile(_image);
-    await storageUploadTask.whenComplete(() async{
+    await storageUploadTask.whenComplete(() async {
       print('Finished uploading pic!');
       final String url = await ref.getDownloadURL();
       print("The download URL is $url");
-      db.addDive(user.uid, {"id": dive.id, "img":url});
-    }); 
+      db.addDive(user.uid, {"id": dive.id, "img": url});
+    });
   }
-  
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    final Map<String, Dive> args = ModalRoute.of(context).settings.arguments ?? { "dive": Dive(user) };
+    final Map<String, Dive> args =
+        ModalRoute.of(context).settings.arguments ?? {"dive": Dive(user)};
     Dive dive = args['dive'];
     print("Dive is ${dive.id}");
 
@@ -161,9 +158,8 @@ class SingleDiveScreen extends StatelessWidget {
       create: (context) => AllFieldsFormBloc(),
       child: Builder(
         builder: (context) {
-
           final formBloc = BlocProvider.of<AllFieldsFormBloc>(context);
-          
+
           // Initialization -- If new fields are added to dive, reflect them here!
           formBloc.uid.updateValue(user.uid);
           formBloc.diveid.updateValue(dive.id);
@@ -174,196 +170,196 @@ class SingleDiveScreen extends StatelessWidget {
           formBloc.purpose.updateValue(dive.purpose);
           formBloc.certificationCompany.updateValue(dive.certificationCompany);
           formBloc.certificationLevel.updateValue(dive.certificationLevel);
-          if(dive.purpose == "Certification"){
-            formBloc.addFieldBlocs(fieldBlocs: [formBloc.certificationCompany, formBloc.certificationLevel]);
+          if (dive.purpose == "Certification") {
+            formBloc.addFieldBlocs(fieldBlocs: [
+              formBloc.certificationCompany,
+              formBloc.certificationLevel
+            ]);
           }
 
           return Theme(
-            data: Theme.of(context).copyWith(
-              inputDecorationTheme: InputDecorationTheme(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-            child: Scaffold(
-              appBar: AppBar(
-              backgroundColor: Theme.of(context).canvasColor,
-              title: Text(
-                'Divemate',
-                style: TextStyle(fontFamily: 'Billabong', fontSize: 38.0),
-              ),
-              centerTitle: true,
-              ),
-              floatingActionButton: floatingTextButton(formBloc.submit, "Submit"),
-              
-              // floatingButton(
-              //       (){
-              //         formBloc.submit();
-              //       }, "assets/icons/pencil.png"),
-
-              body: FormBlocListener<AllFieldsFormBloc, String, String>(
-                onSubmitting: (context, state) {
-                  LoadingDialog.show(context);
-                },
-                onSuccess: (context, state) {
-                  LoadingDialog.hide(context);
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text("Success!")));
-                  Navigator.of(context).popAndPushNamed(HomeScreen.id);
-                },
-                onFailure: (context, state) {
-                  LoadingDialog.hide(context);
-
-                  Scaffold.of(context).showSnackBar(
-                      SnackBar(content: Text(state.failureResponse)));
-                },
-                child: SingleChildScrollView(
-                  physics: ClampingScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-
-                        TextFieldBlocBuilder(
-                          textFieldBloc: formBloc.divesite,
-                          decoration: InputDecoration(
-                            labelText: 'Divesite',
-                            prefixIcon: Icon(Icons.location_pin),
-                          ),
-                        ),
-
-                        TextFieldBlocBuilder(
-                          textFieldBloc: formBloc.buddy,
-                          decoration: InputDecoration(
-                            labelText: 'Buddy',
-                            prefixIcon: Icon(Icons.face_rounded),
-                          ),
-                        ),
-
-
-                        // DateTimeFieldBlocBuilder(
-                        //   dateTimeFieldBloc: formBloc.date1,
-                        //   format: DateFormat('dd-mm-yyyy'),
-                        //   initialDate: DateTime.now(),
-                        //   firstDate: DateTime(1900),
-                        //   lastDate: DateTime(2100),
-                        //   decoration: InputDecoration(
-                        //     labelText: 'Date',
-                        //     prefixIcon: Icon(Icons.calendar_today),
-                        //     helperText: 'Date',
-                        //   ),
-                        // ),
-
-                        DateTimeFieldBlocBuilder(
-                          dateTimeFieldBloc: formBloc.startDatetime,
-                          canSelectTime: true,
-                          format: DateFormat('EEE MMMM dd, yyyy @ h:mma'),
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100),
-                          decoration: InputDecoration(
-                            labelText: 'When did you take the plunge?',
-                            prefixIcon: Icon(Icons.date_range),
-                            //helperText: 'Date and Time',
-                          ),
-                        ),
-
-                        DropdownFieldBlocBuilder<String>(
-                          selectFieldBloc: formBloc.purpose,
-                          decoration: InputDecoration(
-                            labelText: 'What are you diving for?',
-                            prefixIcon: Icon(Icons.sentiment_very_satisfied),
-                          ),
-                          itemBuilder: (context, value) => value,
-                        ),
-
-                        DropdownFieldBlocBuilder<String>(
-                          selectFieldBloc: formBloc.certificationCompany,
-                          decoration: InputDecoration(
-                            labelText: 'Certification company',
-                            prefixIcon: Icon(Icons.sentiment_very_satisfied),
-                          ),
-                          itemBuilder: (context, value) => value,
-                        ),
-
-                        DropdownFieldBlocBuilder<String>(
-                          selectFieldBloc: formBloc.certificationLevel,
-                          decoration: InputDecoration(
-                            labelText: 'Certification level',
-                            prefixIcon: Icon(Icons.sentiment_very_satisfied),
-                          ),
-                          itemBuilder: (context, value) => value,
-                        ),
-
-
-                        // RadioButtonGroupFieldBlocBuilder<String>(
-                        //   selectFieldBloc: formBloc.select2,
-                        //   decoration: InputDecoration(
-                        //     labelText: 'RadioButtonGroupFieldBlocBuilder',
-                        //     prefixIcon: SizedBox(),
-                        //   ),
-                        //   itemBuilder: (context, item) => item,
-                        // ),
-
-                        // CheckboxGroupFieldBlocBuilder<String>(
-                        //   multiSelectFieldBloc: formBloc.multipurpose,
-                        //   itemBuilder: (context, item) => item,
-                        //   decoration: InputDecoration(
-                        //     labelText: 'CheckboxGroupFieldBlocBuilder',
-                        //     prefixIcon: SizedBox(),
-                        //   ),
-                        // ),
-
-                        TextFieldBlocBuilder(
-                          textFieldBloc: formBloc.comment,
-                          maxLines: 6,
-                          minLines: 1,
-                          decoration: InputDecoration(
-                            labelText: 'Comment',
-                            prefixIcon: Icon(Icons.comment),
-                          ),
-                        ),
-
-                        ElevatedButton(
-                          onPressed: (){openFilePicker(user, dive);},
-                          child: Text("Upload a picture!"),
-                        ),
-
-                        
-
-                        // TimeFieldBlocBuilder(
-                        //   timeFieldBloc: formBloc.time1,
-                        //   format: DateFormat('hh:mm a'),
-                        //   initialTime: TimeOfDay.now(),
-                        //   decoration: InputDecoration(
-                        //     labelText: 'TimeFieldBlocBuilder',
-                        //     prefixIcon: Icon(Icons.access_time),
-                        //   ),
-                        // ),
-                        // 
-                        // SwitchFieldBlocBuilder(
-                        //   booleanFieldBloc: formBloc.boolean2,
-                        //   body: Container(
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Text('CheckboxFieldBlocBuilder'),
-                        //   ),
-                        // ),
-                        // 
-                        // CheckboxFieldBlocBuilder(
-                        //   booleanFieldBloc: formBloc.boolean1,
-                        //   body: Container(
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Text('CheckboxFieldBlocBuilder'),
-                        //   ),
-                        // ),
-                      ],
-                    ),
+              data: Theme.of(context).copyWith(
+                inputDecorationTheme: InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),
-            )
-          );
+              child: Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Theme.of(context).canvasColor,
+                  title: Text(
+                    'Divemate',
+                    style: TextStyle(fontFamily: 'Billabong', fontSize: 38.0),
+                  ),
+                  centerTitle: true,
+                ),
+                floatingActionButton:
+                    floatingTextButton(formBloc.submit, "Submit"),
+
+                // floatingButton(
+                //       (){
+                //         formBloc.submit();
+                //       }, "assets/icons/pencil.png"),
+
+                body: FormBlocListener<AllFieldsFormBloc, String, String>(
+                  onSubmitting: (context, state) {
+                    LoadingDialog.show(context);
+                  },
+                  onSuccess: (context, state) {
+                    LoadingDialog.hide(context);
+                    Scaffold.of(context)
+                        .showSnackBar(SnackBar(content: Text("Success!")));
+                    Navigator.of(context).popAndPushNamed(HomeScreen.id);
+                  },
+                  onFailure: (context, state) {
+                    LoadingDialog.hide(context);
+
+                    Scaffold.of(context).showSnackBar(
+                        SnackBar(content: Text(state.failureResponse)));
+                  },
+                  child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          TextFieldBlocBuilder(
+                            textFieldBloc: formBloc.divesite,
+                            decoration: InputDecoration(
+                              labelText: 'Divesite',
+                              prefixIcon: Icon(Icons.location_pin),
+                            ),
+                          ),
+
+                          TextFieldBlocBuilder(
+                            textFieldBloc: formBloc.buddy,
+                            decoration: InputDecoration(
+                              labelText: 'Buddy',
+                              prefixIcon: Icon(Icons.face_rounded),
+                            ),
+                          ),
+
+                          // DateTimeFieldBlocBuilder(
+                          //   dateTimeFieldBloc: formBloc.date1,
+                          //   format: DateFormat('dd-mm-yyyy'),
+                          //   initialDate: DateTime.now(),
+                          //   firstDate: DateTime(1900),
+                          //   lastDate: DateTime(2100),
+                          //   decoration: InputDecoration(
+                          //     labelText: 'Date',
+                          //     prefixIcon: Icon(Icons.calendar_today),
+                          //     helperText: 'Date',
+                          //   ),
+                          // ),
+
+                          DateTimeFieldBlocBuilder(
+                            dateTimeFieldBloc: formBloc.startDatetime,
+                            canSelectTime: true,
+                            format: DateFormat('EEE MMMM dd, yyyy @ h:mma'),
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100),
+                            decoration: InputDecoration(
+                              labelText: 'When did you take the plunge?',
+                              prefixIcon: Icon(Icons.date_range),
+                              //helperText: 'Date and Time',
+                            ),
+                          ),
+
+                          DropdownFieldBlocBuilder<String>(
+                            selectFieldBloc: formBloc.purpose,
+                            decoration: InputDecoration(
+                              labelText: 'What are you diving for?',
+                              prefixIcon: Icon(Icons.sentiment_very_satisfied),
+                            ),
+                            itemBuilder: (context, value) => value,
+                          ),
+
+                          DropdownFieldBlocBuilder<String>(
+                            selectFieldBloc: formBloc.certificationCompany,
+                            decoration: InputDecoration(
+                              labelText: 'Certification company',
+                              prefixIcon: Icon(Icons.sentiment_very_satisfied),
+                            ),
+                            itemBuilder: (context, value) => value,
+                          ),
+
+                          DropdownFieldBlocBuilder<String>(
+                            selectFieldBloc: formBloc.certificationLevel,
+                            decoration: InputDecoration(
+                              labelText: 'Certification level',
+                              prefixIcon: Icon(Icons.sentiment_very_satisfied),
+                            ),
+                            itemBuilder: (context, value) => value,
+                          ),
+
+                          // RadioButtonGroupFieldBlocBuilder<String>(
+                          //   selectFieldBloc: formBloc.select2,
+                          //   decoration: InputDecoration(
+                          //     labelText: 'RadioButtonGroupFieldBlocBuilder',
+                          //     prefixIcon: SizedBox(),
+                          //   ),
+                          //   itemBuilder: (context, item) => item,
+                          // ),
+
+                          // CheckboxGroupFieldBlocBuilder<String>(
+                          //   multiSelectFieldBloc: formBloc.multipurpose,
+                          //   itemBuilder: (context, item) => item,
+                          //   decoration: InputDecoration(
+                          //     labelText: 'CheckboxGroupFieldBlocBuilder',
+                          //     prefixIcon: SizedBox(),
+                          //   ),
+                          // ),
+
+                          TextFieldBlocBuilder(
+                            textFieldBloc: formBloc.comment,
+                            maxLines: 6,
+                            minLines: 1,
+                            decoration: InputDecoration(
+                              labelText: 'Comment',
+                              prefixIcon: Icon(Icons.comment),
+                            ),
+                          ),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              openFilePicker(user, dive);
+                            },
+                            child: Text("Upload a picture!"),
+                          ),
+
+                          // TimeFieldBlocBuilder(
+                          //   timeFieldBloc: formBloc.time1,
+                          //   format: DateFormat('hh:mm a'),
+                          //   initialTime: TimeOfDay.now(),
+                          //   decoration: InputDecoration(
+                          //     labelText: 'TimeFieldBlocBuilder',
+                          //     prefixIcon: Icon(Icons.access_time),
+                          //   ),
+                          // ),
+                          //
+                          // SwitchFieldBlocBuilder(
+                          //   booleanFieldBloc: formBloc.boolean2,
+                          //   body: Container(
+                          //     alignment: Alignment.centerLeft,
+                          //     child: Text('CheckboxFieldBlocBuilder'),
+                          //   ),
+                          // ),
+                          //
+                          // CheckboxFieldBlocBuilder(
+                          //   booleanFieldBloc: formBloc.boolean1,
+                          //   body: Container(
+                          //     alignment: Alignment.centerLeft,
+                          //     child: Text('CheckboxFieldBlocBuilder'),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ));
         },
       ),
     );
@@ -419,7 +415,8 @@ class SuccessScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             ElevatedButton.icon(
-              onPressed: () => Navigator.of(context).pushReplacementNamed(HomeScreen.id),
+              onPressed: () =>
+                  Navigator.of(context).pushReplacementNamed(HomeScreen.id),
               icon: Icon(Icons.replay),
               label: Text('AGAIN'),
             ),
@@ -430,17 +427,6 @@ class SuccessScreen extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // class SingleDiveScreen extends StatefulWidget {
 //   static final String id = 'single_dive_screen';
 
@@ -449,16 +435,9 @@ class SuccessScreen extends StatelessWidget {
 // }
 
 // class _SingleDiveScreenState extends State<SingleDiveScreen> {
-  
-  
-  
-  
-  
+
 //   LatLng currentPosition = LatLng(0, 0);
 //   Completer<GoogleMapController> _controller = Completer();
-
-
-
 
 //   /// Determine the current position of the device.
 //   ///
@@ -473,7 +452,7 @@ class SuccessScreen extends StatelessWidget {
 //     print("service enabled $serviceEnabled");
 //     if (!serviceEnabled) {
 //       // Location services are not enabled don't continue
-//       // accessing the position and request users of the 
+//       // accessing the position and request users of the
 //       // App to enable the location services.
 //       return Future.error('Location services are disabled.');
 //     }
@@ -485,18 +464,18 @@ class SuccessScreen extends StatelessWidget {
 //       if (permission == LocationPermission.denied) {
 //         // Permissions are denied, next time you could try
 //         // requesting permissions again (this is also where
-//         // Android's shouldShowRequestPermissionRationale 
+//         // Android's shouldShowRequestPermissionRationale
 //         // returned true. According to Android guidelines
 //         // your App should show an explanatory UI now.
 //         return Future.error('Location permissions are denied');
 //       }
 //     }
-    
+
 //     if (permission == LocationPermission.deniedForever) {
-//       // Permissions are denied forever, handle appropriately. 
+//       // Permissions are denied forever, handle appropriately.
 //       return Future.error(
 //         'Location permissions are permanently denied, we cannot request permissions.');
-//     } 
+//     }
 
 //     // When we reach here, permissions are granted and we can
 //     // continue accessing the position of the device.
@@ -511,13 +490,12 @@ class SuccessScreen extends StatelessWidget {
 //     print("333!!!");
 //     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(p.latitude, p.longitude))));
 //   }
-  
-  
+
 //   @override
 //   Widget build(BuildContext context) {
 //     Map args = ModalRoute.of(context).settings.arguments as Map;
 //     args ??= {'title':'Title', 'comment': 'comment'};
-    
+
 //     final title = args['title'];
 //     final comment = args['comment'];
 

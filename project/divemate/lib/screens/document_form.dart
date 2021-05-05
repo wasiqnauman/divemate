@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-
 import 'login_screen.dart';
 
 class DocumentForm extends StatefulWidget {
@@ -32,23 +31,24 @@ class _DocumentFormState extends State<DocumentForm> {
   String _comment;
   String _documentType;
   final db = DatabaseService();
-  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   bool _first = true;
 
   openFilePicker(User user, Document document) async {
     PickedFile _pi = await ImagePicker().getImage(source: ImageSource.gallery);
-    if(_pi == null){
+    if (_pi == null) {
       return;
     }
-    File _image = File(_pi.path); 
+    File _image = File(_pi.path);
     Reference ref = storage.ref().child("${user.uid}/${document.id}/pics/0");
     UploadTask storageUploadTask = ref.putFile(_image);
-    await storageUploadTask.whenComplete(() async{
+    await storageUploadTask.whenComplete(() async {
       print('Finished uploading pic!');
       final String url = await ref.getDownloadURL();
       print("The download URL is $url");
-      db.addDocument(user.uid, {"id": document.id, "img":url});
-    }); 
+      db.addDocument(user.uid, {"id": document.id, "img": url});
+    });
   }
 
   void _submit(User user, String id) {
@@ -73,7 +73,9 @@ class _DocumentFormState extends State<DocumentForm> {
     if (user == null) {
       return LoginScreen();
     }
-    final Map<String, Document> args = ModalRoute.of(context).settings.arguments ?? {"document":Document.fresh(user)};
+    final Map<String, Document> args =
+        ModalRoute.of(context).settings.arguments ??
+            {"document": Document.fresh(user)};
     final Document document = args["document"];
     return Scaffold(
       // appBar: PreferredSize(
@@ -117,13 +119,13 @@ class _DocumentFormState extends State<DocumentForm> {
                       height: 20.0,
                     ),
                     createTextField(
-                      'Document Number',
-                      (input) => (input == null || input.isEmpty)
-                          ? 'Dcoument number cannot be empty'
-                          : null,
-                      (input) => _documentNo = input,
-                    false,
-                    initVal: document.number),
+                        'Document Number',
+                        (input) => (input == null || input.isEmpty)
+                            ? 'Dcoument number cannot be empty'
+                            : null,
+                        (input) => _documentNo = input,
+                        false,
+                        initVal: document.number),
                     createTextField(
                         'Comments',
                         (input) => (input == null || input.isEmpty)
@@ -131,14 +133,14 @@ class _DocumentFormState extends State<DocumentForm> {
                             : null,
                         (input) => _comment = input,
                         false,
-                      initVal: document.comment),
+                        initVal: document.comment),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('Document Type:'),
                         DropdownButton<String>(
-                          value: _first? document.doctype: _documentType,
+                          value: _first ? document.doctype : _documentType,
                           elevation: 16,
                           style: const TextStyle(color: Colors.deepPurple),
                           onChanged: (String newValue) {
@@ -159,29 +161,19 @@ class _DocumentFormState extends State<DocumentForm> {
                     ),
 
                     createButton('Submit', () => _submit(user, document.id)),
-                    // ElevatedButton(
-                    //     onPressed: () => _submit(user), child: Text("submit")),
-                    // // create the password textfield
-                    // createTextField(
-                    //     'Comment',
-                    //     (input) => input.length < 6
-                    //         ? 'Password must be atleast 6 characters'
-                    //         : null,
-                    //     (input) => _comment = input,
-                    //     true),
-                    // // add space
-                    // SizedBox(height: 20.0),
-
-                    // createButton('Add document', _submit()),
-                    // // add space
-                    // SizedBox(height: 20.0),
                   ],
-                )
-              ),
-              ElevatedButton(
-                onPressed: (){openFilePicker(user, document);},
-                child: Text("Upload a picture!"),
-              ),
+                )),
+            SizedBox(
+              height: 10.0,
+            ),
+            createButton('Upload a picture', () {
+              openFilePicker(user, document);
+            }),
+
+            // ElevatedButton(
+            //   onPressed: (){openFilePicker(user, document);},
+            //   child: Text("Upload a picture!"),
+            // ),
           ],
         ),
       ),
