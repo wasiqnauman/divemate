@@ -6,6 +6,7 @@ import 'package:divemate/screens/documents_screen.dart';
 import 'package:divemate/screens/home_screen.dart';
 import 'package:divemate/screens/login_screen.dart';
 import 'package:divemate/screens/user_profile.dart';
+import 'package:divemate/widgets/widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -189,9 +190,10 @@ class SingleDiveScreen extends StatelessWidget {
                 appBar: AppBar(
                   backgroundColor: Theme.of(context).canvasColor,
                   title: Text(
-                    'Divemate',
+                    'Add a new dive',
                     style: TextStyle(fontFamily: 'Billabong', fontSize: 38.0),
                   ),
+                  elevation: 0,
                   centerTitle: true,
                 ),
                 floatingActionButton:
@@ -224,6 +226,11 @@ class SingleDiveScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: <Widget>[
+                          // Text(
+                          //   'Add a new dive!',
+                          //   style: TextStyle(
+                          //       fontFamily: 'Billabong', fontSize: 50.0),
+                          // ),
                           TextFieldBlocBuilder(
                             textFieldBloc: formBloc.divesite,
                             decoration: InputDecoration(
@@ -322,13 +329,16 @@ class SingleDiveScreen extends StatelessWidget {
                             ),
                           ),
 
-                          ElevatedButton(
-                            onPressed: () {
-                              openFilePicker(user, dive);
-                            },
-                            child: Text("Upload a picture!"),
-                          ),
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     openFilePicker(user, dive);
+                          //   },
+                          //   child: Text("Upload a picture!"),
+                          // ),
 
+                          createButton('Upload a picture', () {
+                            openFilePicker(user, dive);
+                          }),
                           // TimeFieldBlocBuilder(
                           //   timeFieldBloc: formBloc.time1,
                           //   format: DateFormat('hh:mm a'),

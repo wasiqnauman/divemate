@@ -10,6 +10,7 @@ import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:audioplayers/audio_cache.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -18,7 +19,8 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   String photoURL;
   final audioPlayer = AudioCache();
 
@@ -35,6 +37,14 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+  _RickRoll() async {
+    const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not rick roll';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +53,9 @@ class _UserProfileState extends State<UserProfile> {
     String subUsername = user.email.substring(0, user.email.indexOf('@'));
     String username = user.displayName != null ? user.displayName : subUsername;
     ImageProvider profilePic;
-    if(photoURL == null){
+    if (photoURL == null) {
       profilePic = AssetImage('assets/icons/default_pic.jpeg');
-    }
-    else{
+    } else {
       print("PHOTO URL ${user.photoURL}");
       profilePic = NetworkImage(photoURL);
     }
@@ -66,25 +75,30 @@ class _UserProfileState extends State<UserProfile> {
               Container(
                 margin: EdgeInsets.all(10), // add margin to all sides
                 child: GestureDetector(
-                        onTap: () async{
-                          PickedFile pic = await ImagePicker().getImage(source: ImageSource.gallery);
-                          if(pic != null){
-                            Reference ref = storage.ref().child("${user.uid}/profilePic");
-                            UploadTask storageUploadTask = ref.putFile(File(pic.path));
-                            await storageUploadTask.whenComplete(() async{
-                              print("Changed picture!");
-                              final String url = await ref.getDownloadURL();
-                              print("The download URL is $url");
-                              await user.updateProfile(photoURL: url);
-                              setState(() {photoURL = url;});
-                            });
-                          }
-                        },
-                        child: CircleAvatar(
-                        radius: 80,
-                        backgroundImage: profilePic,
-                      ),
-                    ),
+                  onTap: () async {
+                    PickedFile pic = await ImagePicker()
+                        .getImage(source: ImageSource.gallery);
+                    if (pic != null) {
+                      Reference ref =
+                          storage.ref().child("${user.uid}/profilePic");
+                      UploadTask storageUploadTask =
+                          ref.putFile(File(pic.path));
+                      await storageUploadTask.whenComplete(() async {
+                        print("Changed picture!");
+                        final String url = await ref.getDownloadURL();
+                        print("The download URL is $url");
+                        await user.updateProfile(photoURL: url);
+                        setState(() {
+                          photoURL = url;
+                        });
+                      });
+                    }
+                  },
+                  child: CircleAvatar(
+                    radius: 80,
+                    backgroundImage: profilePic,
+                  ),
+                ),
               ),
               Text(
                 // name of the user
@@ -129,8 +143,13 @@ class _UserProfileState extends State<UserProfile> {
                           style: TextStyle(color: Colors.black),
                         )),
                     TextButton.icon(
-                        onPressed: () {Toast.show("\$ Thank you for your contribution \$", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-                                      // audioPlayer.play("caching.wav");
+                        onPressed: () {
+                          //_RickRoll();
+                          Toast.show(
+                              "\$ Thank you for your contribution \$", context,
+                              duration: Toast.LENGTH_SHORT,
+                              gravity: Toast.BOTTOM);
+                          // audioPlayer.play("caching.wav");
                         },
                         icon: Icon(
                           Icons.attach_money,
