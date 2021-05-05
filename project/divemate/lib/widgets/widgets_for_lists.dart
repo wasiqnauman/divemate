@@ -1,5 +1,6 @@
 import 'package:divemate/database.dart';
 import 'package:divemate/models.dart';
+import 'package:divemate/screens/document_form.dart';
 import 'package:divemate/screens/singledive_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -162,7 +163,7 @@ Widget customListViewDives(List<Dive> _divelist, User user, BuildContext context
 }
 
 // IMPORTANT: Need a second Listview for documents since they have different properties
-Widget customListViewDocuments(dynamic _doclist, User user, BuildContext context) {
+Widget customListViewDocuments(List<Document> _doclist, User user, BuildContext context) {
   /*
     @params
     _doclist: list of the tiles (dives or docs, etc.)
@@ -183,7 +184,14 @@ Widget customListViewDocuments(dynamic _doclist, User user, BuildContext context
     itemCount: _doclist.length,
     itemBuilder: (BuildContext context, int index) {
 
-      var previewIcon = Icon(Icons.image, size: 60, color: Colors.black);
+      var previewIcon;
+      previewIcon = Icon(Icons.image, size: 60, color: Colors.black);
+      if(_doclist[index]?.img == null || _doclist[index]?.img == "" || _doclist[index]?.img == "LINK_TO_IMG"){
+        previewIcon = Icon(Icons.image, size: 60);
+      }
+      else{
+        previewIcon = Image.network(_doclist[index].img, width: 60, height: 60,);
+      }
       // print(_doclist[index].img);
       // if(_doclist[index].img == null){
       //   previewIcon = Icon(Icons.image, size: 60);
@@ -192,14 +200,16 @@ Widget customListViewDocuments(dynamic _doclist, User user, BuildContext context
       //   previewIcon = Image.network(_doclist[index].img);
       // }
       
+      
 
       return ListTile(
         // tileColor: Color(0xffd8b7a9),
         tileColor: Color(0xffbdc3c7),
         leading: previewIcon,
+        onTap: () => Navigator.pushNamed(context, DocumentForm.id, arguments: {'document':_doclist[index]}),
         title: Text(_doclist[index].name),
         subtitle: Text(
-          "${_doclist[index].comment}\nType:",
+          "${_doclist[index].comment}\nType: ${_doclist[index].doctype}",
         ),
         trailing: IconButton(
           onPressed: () => deleteTile(index),

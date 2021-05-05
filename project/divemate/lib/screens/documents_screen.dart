@@ -41,7 +41,7 @@ class _DocumentsScreen extends State<DocumentsScreen> {
                 //backgroundColor: const Color(0xffecf0f1),
                 body: customListViewDocuments(documents, user, context),
                 floatingActionButton: floatingButton(
-                    () => Navigator.pushNamed(context, DocumentForm.id),
+                    () => Navigator.pushNamed(context, DocumentForm.id, arguments:{'document':Document(db.getNewDocumentId(user))}),
                     // () => db.addDocument(user, testDocument),
                     "assets/icons/documents.png"),
               );

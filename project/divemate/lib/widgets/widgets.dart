@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 // widgets for the login/signup screen
 
 Widget createTextField(
-    String _label, Function _val, Function _onSave, bool _obscure) {
+    String _label, Function _val, Function _onSave, bool _obscure, {String initVal}) {
   /*
     @params
     _label: label of textfield
@@ -25,7 +25,8 @@ Widget createTextField(
         obscureText: _obscure,
         decoration: InputDecoration(labelText: _label),
         validator: _val,
-        onSaved: _onSave),
+        onSaved: _onSave,
+        initialValue: initVal,),
   );
 }
 

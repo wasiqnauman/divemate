@@ -32,6 +32,7 @@ class DatabaseService {
     return _db.collection('users').doc(user.uid).collection('dives-list').doc().id;
   }
 
+
   String getNewDocumentId(User user){
     return _db.collection('users').doc(user.uid).collection('documents-list').doc().id;
   }
@@ -44,12 +45,10 @@ class DatabaseService {
     return dive["id"];
   }
 
-  Future<void> addDocument(User user, dynamic document) {
-    return _db
-        .collection('users')
-        .doc(user.uid)
-        .collection('documents-list')
-        .add(document);
+  Future<void> addDocument(String uid, dynamic document) async{
+    CollectionReference docListRef = _db.collection('users').doc(uid).collection('documents-list');
+    await docListRef.doc(document["id"]).set(document as dynamic, SetOptions(merge: true));
+    return document["id"];
   }
 
   

@@ -43,20 +43,29 @@ class Dive {
 }
 
 class Document {
-  final String id;
-  final String name;
-  final String img;
-  final String comment;
+  String id;
+  String name;
+  String img;
+  String number;
+  String doctype;
+  String comment;
 
-  Document({this.id, this.name, this.img, this.comment});
+  DatabaseService _db = DatabaseService();
+  Document(this.id, {this.name, this.img, this.comment, this.number, this.doctype});
+  
+  Document.fresh(User user){
+    this.id = _db.getNewDocumentId(user);
+  }
 
   factory Document.fromFireStore(DocumentSnapshot doc) {
     Map data = doc.data();
 
     return Document(
-      id: doc.id,
+      doc.id,
       name: data['name'] ?? '',
       img: data['img'] ?? '',
+      number: data['number'] ?? '',
+      doctype: data['doctype'] ?? '',
       comment: data['comment'] ?? '',
     );
   }
