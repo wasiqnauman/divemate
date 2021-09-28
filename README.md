@@ -1,6 +1,6 @@
 # Divemate
 
-Personal diving buddy to log all your dives and helps you conveniently store all your licences, documents, and gear info all at the comfort of your palm.
+Personal diving buddy to log all your dives and helps you conveniently store all your licences, documents, and gear info all in the comfort of your palm.
 ### How to get started on the project:  
 
 1. Clone the repository to your working directory using `git clone https://github.com/wasiqnauman/divemate.git`  
